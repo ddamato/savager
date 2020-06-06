@@ -12,11 +12,11 @@ const iife = (function consolidate(currentSheetId) {
   currentSheet.remove();
 }).toString();
 
-class Savager {
+export default class Savager {
   constructor(symbols, options) {
     this._symbols = {};
     this._externalUrl = '';
-    const { externalUrl } = options;
+    const { externalUrl } = options || {};
     this.storeSymbols(symbols).setExternalUrl(externalUrl);
   }
 
@@ -69,7 +69,6 @@ class Savager {
     }
     return this;
   }
-
 }
 
 function autoAppend(sheet, script) {

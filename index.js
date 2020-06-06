@@ -1,3 +1,2 @@
-module.exports = function() {
-  return true;
-}
+const Savager = require('./src/savager.js');
+module.exports = Savager;

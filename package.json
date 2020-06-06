@@ -2,8 +2,11 @@
   "name": "savager",
   "version": "0.0.1",
   "description": "SVG Manager Solution",
-  "main": "index.js",
+  "main": "./dist/savager.min.js",
+  "browser": "./dist/savager.iife.js",
   "scripts": {
+    "bundle": "rollup -c",
+    "build:examples": "npm run bundle && mkdir -p ./examples/savager && cp -r ./dist/*.js ./examples/savager",
     "test": "echo \"Error: no test specified\" && exit 1",
     "version": "auto-changelog -p && git add CHANGELOG.md"
   },
@@ -19,6 +22,8 @@
   },
   "homepage": "https://github.com/ddamato/savager#readme",
   "devDependencies": {
-    "auto-changelog": "^2.0.0"
+    "auto-changelog": "^2.0.0",
+    "rollup": "^2.13.1",
+    "rollup-plugin-terser": "^6.1.0"
   }
 }
