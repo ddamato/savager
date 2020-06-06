@@ -13,16 +13,16 @@ const iife = (function consolidate(currentSheetId) {
 }).toString();
 
 class Savager {
-  constructor(inventory, options) {
-    this._inventory = {};
+  constructor(symbols, options) {
+    this._symbols = {};
     this._externalUrl = '';
     const { externalUrl } = options;
-    this.storeInventory(inventory).setExternalUrl(externalUrl);
+    this.storeSymbols(symbols).setExternalUrl(externalUrl);
   }
 
   prepareAssets(assetNames, options) {
     const { external, autoappend, consolidate, classNames } = options;
-    const className = `class="${['savager-svg'].concat(classNames).filter(Boolean).join(' ')}"`;
+    const className = `class="${[].concat(classNames).filter(Boolean).join(' ')}"`;
 
     const svgAssets = [].concat(assetNames).reduce(function collectAssets(assets, assetName) {
       let url = `#${assetName}`;
@@ -36,8 +36,8 @@ class Savager {
     }, {});
 
     let spritesheet = Object.keys(svgAssets).reduce(function unwrapSvg(sheet, assetName) {
-      return Object.keys(this._inventory).length && this._inventory[assetName]
-        ? sheet + inventory[assetName].replace(/<\/?svg ?[^>]*>/gmi, '')
+      return Object.keys(this._symbols).length && this._symbols[assetName]
+        ? sheet + this._symbols[assetName].replace(/<\/?svg ?[^>]*>/gmi, '')
         : sheet
     }, '');
 
@@ -58,8 +58,8 @@ class Savager {
     return { assets: svgAssets };
   }
 
-  storeInventory(inventory) {
-    this._inventory = Object.assign({}, this._inventory, inventory);
+  storeSymbols(symbols) {
+    this._symbols = Object.assign({}, this._symbols, symbols);
     return this;
   }
 
