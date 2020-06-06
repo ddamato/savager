@@ -4,7 +4,8 @@
   "description": "SVG Manager Solution",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "version": "auto-changelog -p && git add CHANGELOG.md"
   },
   "repository": {
     "type": "git",
@@ -16,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/ddamato/savager/issues"
   },
-  "homepage": "https://github.com/ddamato/savager#readme"
+  "homepage": "https://github.com/ddamato/savager#readme",
+  "devDependencies": {
+    "auto-changelog": "^2.0.0"
+  }
 }
