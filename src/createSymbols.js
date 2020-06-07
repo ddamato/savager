@@ -14,12 +14,13 @@ export default async function createSymbols(pathOrObject) {
 
     try {
       const files = await fs.promises.readdir(pathOrObject);
-      const sources = Promise.all(files.map(async (file) => {
+      const sources = await Promise.all(files.map(async (file) => {
         const fileName = path.parse(file).name;
-        const source = await fs.promises.readFile(file);
-        return { [fileName]: source };
+        const source = await fs.promises.readFile(path.resolve(pathOrObject, file));
+        return { [fileName]: source.toString() };
       }));
-      return createAssets(sources);
+      const flattened = sources.reduce(( acc, source ) => Object.assign(acc, source), {});
+      return createSymbols(flattened);
     } catch (err) {
       throw new Error(err);
     }
@@ -36,10 +37,10 @@ function toSymbol(svgString, name) {
   const filteredAttrs = attrsString
     .split(' ')
     .filter((attr) => !attr.startsWith('xmlns'))
-    .unshift(`id="${name}"`);
+    .concat(`id="${name}"`);
   const asSymbol = svgString
     .replace(attrsString, '') // Remove all the attributes
     .replace(/(<\/?)svg/gmi, '$1symbol') // Replace 'svg' tag name with 'symbol'
     .replace(/<symbol /i, `<symbol ${filteredAttrs.join(' ')}`); // Re-insert filtered attributes
-  return `<svg xmlns="http://www.w3.org/2000/svg">${asSymbol}</svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg">${asSymbol}</svg>`.replace(/\r?\n|\r/g, ''); // Remove unnecssary line breaks
 }

@@ -10,8 +10,10 @@ const args = minimist(process.argv.slice(2), {
   default: { name: 'symbols', ext: 'json' },
 });
 
-const symbols = createSymbols(args.input);
-fs.ensureDir(args.output).then(() => {
-  const contents = args.ext === 'json' ? JSON.stringify(symbols) : symbols;
-  fs.writeFile(path.join(args.output, `${args.name}.${args.ext}`), contents, 'utf-8');
-}).catch(() => process.exit(1));
+createSymbols(args.input).then((symbols) => {
+  fs.ensureDir(args.output).then(() => {
+    const contents = args.ext === 'json' ? JSON.stringify(symbols) : symbols;
+    fs.writeFile(path.join(args.output, `${args.name}.${args.ext}`), contents, 'utf-8');
+  }).catch(() => process.exit(1));
+});
+
