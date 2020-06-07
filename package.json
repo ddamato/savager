@@ -5,10 +5,11 @@
   "main": "dist/savager.umd.js",
   "module": "dist/savager.esm.js",
   "browser": "dist/savager.umd.js",
+  "unpkg": "dist/savager.umd.js",
   "scripts": {
-    "bundle": "rollup -c",
-    "build:examples": "npm run bundle && mkdir -p ./examples/savager && cp -r ./dist/*.js ./examples/savager",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c",
+    "build:examples": "npm run build && mkdir -p ./examples/savager && cp -r ./dist/*.js ./examples/savager",
+    "prepare": "npm run build",
     "version": "auto-changelog -p && git add CHANGELOG.md"
   },
   "bin": {
