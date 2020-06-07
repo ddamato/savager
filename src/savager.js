@@ -21,7 +21,8 @@ export default class Savager {
   }
 
   prepareAssets(assetNames, options) {
-    const { external, autoappend, consolidate, classNames } = options;
+    console.log(this);
+    const { external, autoappend, consolidate, classNames } = options || {};
     const className = `class="${[].concat(classNames).filter(Boolean).join(' ')}"`;
 
     const svgAssets = [].concat(assetNames).reduce(function collectAssets(assets, assetName) {
@@ -35,14 +36,15 @@ export default class Savager {
       return Object.assign(assets, { [assetName]: svg });
     }, {});
 
-    let spritesheet = Object.keys(svgAssets).reduce(function unwrapSvg(sheet, assetName) {
-      return Object.keys(this._symbols).length && this._symbols[assetName]
-        ? sheet + this._symbols[assetName].replace(/<\/?svg ?[^>]*>/gmi, '')
+    const symbols = this._symbols;
+    let assetSheet = Object.keys(svgAssets).reduce(function unwrapSvg(sheet, assetName) {
+      return symbols && symbols[assetName]
+        ? sheet + symbols[assetName].replace(/<\/?svg ?[^>]*>/gmi, '')
         : sheet
     }, '');
 
-    if (spritesheet) {
-      const { sheet, script } = completeSpritesheet(spritesheet, consolidate);
+    if (assetSheet) {
+      const { sheet, script } = completeAssetSheet(assetSheet, consolidate);
       const isBrowser = typeof document !== 'undefined' && document.createElement;
       if (isBrowser && autoappend && !external) {
         const inject = (typeof consolidate !== 'boolean' || consolidate) && script;
@@ -51,7 +53,7 @@ export default class Savager {
   
       return {
         assets: svgAssets,
-        spritesheet: sheet,
+        sheet,
       }
     }
 
@@ -86,7 +88,7 @@ function autoAppend(sheet, script) {
   document.body.append(frag);
 }
 
-function completeSpritesheet(symbols, consolidate) {
+function completeAssetSheet(symbols, consolidate) {
   const falseAttr = 'consolidate="false"';
   const id = `savager-${Math.random().toString(36).substr(2, 9)}`;
   const attrs = `id="${id}" xmlns="http://www.w3.org/2000/svg" style="display:none;" ${falseAttr}`;
