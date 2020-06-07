@@ -1,8 +1,8 @@
-#!/usr/bin/env ./node
+#!/usr/bin/env node
 const path = require('path');
 const fs = require('fs-extra');
 const minimist = require('minimist');
-const createSymbols = require('../src/createSymbols.js');
+const { createSymbols } = require('../dist/savager.umd.js');
 
 const args = minimist(process.argv.slice(2), {
   string: ['input', 'output', 'name', 'ext'],
