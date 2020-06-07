@@ -33,10 +33,13 @@ export default async function createSymbols(pathOrObject) {
 }
 
 function toSymbol(svgString, name) {
-  const str = svgString.replace(/\r?\n|\r| {2,}/g, '');
   let namespace = 'xmlns="http://www.w3.org/2000/svg"';
-  const asSymbol = str.replace(/(xmlns=.[^"']+)./gmi, (match) => {
-    namespace = match; return `id="${name}"`; // Grab namespace, insert id
-  }).replace(/(<\/?)svg/gmi, '$1symbol'); // Replace 'svg' tag name with 'symbol'
-  return `<svg ${namespace}>${asSymbol}</svg>`; // Remove unnecssary line breaks
+  const asSymbol = svgString.replace(/(xmlns=.[^"']+)./gmi, (match) => {
+    namespace = match; return ''; // Capture namespace if it exists
+  })
+  .replace(/(<\/?)svg/gmi, '$1symbol') // Replace 'svg' tag name with 'symbol'
+  .replace(/<symbol/, `<symbol id="${name}"`); // Include the id
+  return `<svg ${namespace}>${asSymbol}</svg>`
+    .replace(/\r?\n|\r|/g, '') // Remove unnecssary linebreaks
+    .replace(/ {2,}/g, ' '); // Remove unnecssary whitespace
 }

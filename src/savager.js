@@ -21,19 +21,24 @@ export default class Savager {
   }
 
   prepareAssets(assetNames, options) {
-    console.log(this);
-    const { external, autoappend, consolidate, classNames } = options || {};
-    const className = `class="${[].concat(classNames).filter(Boolean).join(' ')}"`;
+    const { external, autoappend, consolidate, classNames, toElement } = options || {};
+    const className = classNames ? `class="${[].concat(classNames).filter(Boolean).join(' ')}"` : '';
+    let renderFn = (svgString) => svgString;
+
+    if (toElement) {
+      renderFn = typeof toElement === 'function' ? toElement : toElementFn;
+    }
 
     const svgAssets = [].concat(assetNames).reduce(function collectAssets(assets, assetName) {
       let url = `#${assetName}`;
-      let attr = 'internal';
+      let exposure = 'internal';
       if (external) {
         url = `${this._externalUrl}${assetName}.svg` + url;
-        attr = 'external';
+        exposure = 'external';
       }
-      const svg = `<svg ${className} ${attr}><use xlink:href="${url}"/></svg>`;
-      return Object.assign(assets, { [assetName]: svg });
+      const attrs = [className, exposure].filter(Boolean).join(' ');
+      const svgString = `<svg ${attrs}><use xlink:href="${url}"/></svg>`;
+      return Object.assign(assets, { [assetName]: renderFn(svgString) });
     }, {});
 
     const symbols = this._symbols;
@@ -100,4 +105,13 @@ function completeAssetSheet(symbols, consolidate) {
     sheet,
     script,
   };
+}
+
+function toElementFn(svgString) {
+  if (typeof document !== 'undefined' && document.createElement) {
+    const tmpl = document.createElement('template');
+    tmpl.innerHTML = svgString;
+    return tmpl.content;
+  }
+  return svgString;
 }

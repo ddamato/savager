@@ -1,0 +1,21 @@
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+.inventory {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+[data-name]:before {
+  content: attr(data-name);
+  display: block;
+}
+
+.savager-svg {
+  display: inline-flex;
+  fill: currentColor;
+  height: var(--svg--dimension, 1.5em);
+  width: var(--svg--dimension, 1.5em);
+}
