@@ -1,11 +1,9 @@
 import pkg from './package.json';
 import { terser } from 'rollup-plugin-terser';
 
-export default [{
+export default {
   input: './index.js',
-  plugins: [
-    terser(),
-  ],
+  plugins: [terser()],
   output: [{
     file: pkg.main,
     exports: 'named',
@@ -15,4 +13,4 @@ export default [{
     file: pkg.module,
     format: 'esm',
   }]
-}]
+};
