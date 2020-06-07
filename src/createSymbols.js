@@ -1,21 +1,22 @@
-const path = require('path');
-const fs = require('fs');
-const { promisify } = require('util');
+export default async function createSymbols(pathOrObject) {
 
-const readdir = promisify(fs.readdir);
-const readFile = promisify(fs.readFile);
-
-async function createSymbols(pathOrObject) {
   if (!pathOrObject) {
     return {};
   }
 
   if (typeof pathOrObject === 'string') {
+    if (typeof window !== 'undefined' || !require) {
+      throw new Error('Can only create symbols using path within node environment.');
+    }
+
+    const path = require('path');
+    const fs = require('fs');
+
     try {
-      const files = await readdir(pathOrObject);
+      const files = await fs.promises.readdir(pathOrObject);
       const sources = Promise.all(files.map(async (file) => {
         const fileName = path.parse(file).name;
-        const source = await readFile(file);
+        const source = await fs.promises.readFile(file);
         return { [fileName]: source };
       }));
       return createAssets(sources);
@@ -42,5 +43,3 @@ function toSymbol(svgString, name) {
     .replace(/<symbol /i, `<symbol ${filteredAttrs.join(' ')}`); // Re-insert filtered attributes
   return `<svg xmlns="http://www.w3.org/2000/svg">${asSymbol}</svg>`;
 }
-
-module.exports = createSymbols;
