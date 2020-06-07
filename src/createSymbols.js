@@ -33,14 +33,12 @@ export default async function createSymbols(pathOrObject) {
 }
 
 function toSymbol(svgString, name) {
-  const attrsString = svgString.replace(/<\/?svg ?([^>]+)?>/i, '$1');
-  const filteredAttrs = attrsString
-    .split(' ')
-    .filter((attr) => !attr.startsWith('xmlns'))
-    .concat(`id="${name}"`);
-  const asSymbol = svgString
+  const str = svgString.replace(/\r?\n|\r| {2,}/g, '');
+  const attrsString = str.replace(/<\/?svg ?([^>]+)?>/i, '$1');
+  const namespace = ' xmlns="http://www.w3.org/2000/svg"';
+  const asSymbol = str
     .replace(attrsString, '') // Remove all the attributes
     .replace(/(<\/?)svg/gmi, '$1symbol') // Replace 'svg' tag name with 'symbol'
-    .replace(/<symbol /i, `<symbol ${filteredAttrs.join(' ')}`); // Re-insert filtered attributes
-  return `<svg xmlns="http://www.w3.org/2000/svg">${asSymbol}</svg>`.replace(/\r?\n|\r/g, ''); // Remove unnecssary line breaks
+    .replace(namespace, ''); // Remove namespace
+  return `<svg${namespace}>${asSymbol}</svg>`; // Remove unnecssary line breaks
 }
