@@ -8,7 +8,7 @@
   "unpkg": "dist/savager.umd.js",
   "scripts": {
     "build": "rollup -c",
-    "build:examples": "npm run build && mkdir -p ./examples/savager && cp -r ./dist/*.js ./examples/savager",
+    "build:docs": "npm run build && mkdir -p ./docs/savager && cp -r ./dist/*.js ./docs/savager",
     "prepare": "npm run build",
     "version": "auto-changelog -p && git add CHANGELOG.md"
   },
