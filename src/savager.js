@@ -11,11 +11,9 @@ export default class Savager {
 
   prepareAssets(assetNames, options) {
     const { externalUrl, inject, classNames, toElement } = options || this._options;
-    const primarySvgAttrs = { 
-      xmlns: 'http://www.w3.org/2000/svg',
-    };
+    const primarySvgAttrs = { xmlns: 'http://www.w3.org/2000/svg' };
 
-    if (className) {
+    if (classNames) {
       primarySvgAttrs.class = [].concat(classNames).filter(Boolean).join(' ');
     }
 
@@ -26,9 +24,7 @@ export default class Savager {
 
     const svgAssets = [].concat(assetNames).reduce(function collectAssets(assets, assetName) {
       const svgAttrs = Object.assign({ exposure: 'internal' }, primarySvgAttrs);
-      const useAttrs = {
-        href: `#${assetName}`
-      }
+      const useAttrs = { href: `#${assetName}` };
 
       if (externalUrl) {
         svgAttrs.exposure = 'external';
