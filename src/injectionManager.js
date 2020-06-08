@@ -1,4 +1,3 @@
-
 class InjectionManager {
   constructor() {
     this._registrar = {};
@@ -15,9 +14,12 @@ class InjectionManager {
       return Promise.resolve(this._replace(useNode, id));
     }
 
-    const root = useNode.getRootNode();
-    const rootReference = root.getElementById(id);
-    if (exposure === 'internal' && !rootReference) {
+    if (exposure === 'internal') {
+      const root = useNode.getRootNode();
+      const rootReference = root.getElementById(id);
+      if (rootReference) {
+        return Promise.resolve('Reference found in root, replacement halted.');
+      }
       const inShadowBoundary = useNode.getRootNode({ composed:true }) !== root;
       if (inShadowBoundary) {
         return this._embedInternal(useNode, { id });
@@ -28,7 +30,7 @@ class InjectionManager {
       return this._embedExternal(useNode, { id, url });
     }
 
-    return Promise.reject('Could not find reference to replace node. Ensure the reference sheet or external url exist before executing this script');
+    return Promise.reject('Could not find asset reference. Ensure the reference sheet or external url exist before executing this script');
   }
 
   _replace(useNode, id) {
@@ -51,7 +53,7 @@ class InjectionManager {
       const symbol = symbolReference.cloneNode(true);
       return Promise.resolve(this.register(useNode, id, this._transformSymbol(symbol)));
     }
-    return Promise.reject(`Symbol (${id}) not found in document`);
+    return Promise.reject(`Symbol "${id}" not found in document.`);
   }
 
   _embedExternal(useNode, { id, url }) {
@@ -61,7 +63,7 @@ class InjectionManager {
       if (symbol && symbol.children.length === 1) {
         return this.register(useNode, id, this._transformSymbol(symbol));
       }
-      throw new Error(`Malformed external reference, please ensure '<symbol/>' assets`);
+      throw new Error(`Malformed external reference, please ensure '<symbol/>' assets.`);
     }).catch((err) => console.error(err));
   }
 
@@ -84,13 +86,12 @@ class InjectionManager {
 }
 
 const WINDOW_FN_REFERENCE = 'svgInjectionManager';
-
-export default {
-  injectionString: `window.${WINDOW_FN_REFERENCE} && window.${WINDOW_FN_REFERENCE}.replace(this)`,
-  injectionScript: () => {
-    if (typeof window !== 'undefined') {
-      window[WINDOW_FN_REFERENCE] = new InjectionManager();
-      return window[WINDOW_FN_REFERENCE];
-    }
-  },
+export const injectionString = `window.${WINDOW_FN_REFERENCE} && window.${WINDOW_FN_REFERENCE}.replace(this)`;
+export const injectionScript = () => {
+  if (typeof window !== 'undefined') {
+    window[WINDOW_FN_REFERENCE] = new InjectionManager();
+    return window[WINDOW_FN_REFERENCE];
+  }
 }
+
+export default InjectionManager;

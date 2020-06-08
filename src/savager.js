@@ -1,6 +1,6 @@
 // import consolidateSheet from './consolidateSheet.js';
 // const consolidateFnString = consolidateSheet.toString();
-import { injectionScript, injectionString } from './injectionManager.js';
+import { injectionString, injectionScript } from './injectionManager.js';
 
 export default class Savager {
   constructor(symbols, options) {

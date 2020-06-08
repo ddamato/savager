@@ -5,27 +5,53 @@ const minimist = require('minimist');
 const { createSymbols } = require('../dist/savager.umd.js');
 
 const args = minimist(process.argv.slice(2), {
-  string: ['input', 'output', 'name', 'type'],
-  alias: { i: 'input', o: 'output', n: 'name', t: 'type' },
-  default: { name: 'symbols', t: 'json' },
+  string: ['input', 'output', 'type'],
+  alias: { i: 'input', o: 'output', t: 'type' },
+  default: { t: 'json' },
 });
 
-createSymbols(args.input).then((symbols) => {
-  fs.ensureDir(args.output).then(() => {
-    const json = JSON.stringify(symbols);
-    const ext = args.type === 'json' ? 'json' : 'js';
-    let contents;
-    switch(args.type) {
-      case 'esm':
-        contents = `export default ${json}`;
-        break;
-      case 'cjs':
-        contents = `modules.export = ${json}`;
-        break;
-      default:
-        contents = json;
-    };
-    fs.writeFile(path.join(args.output, `${args.name}.${ext}`), contents, 'utf-8');
-  }).catch(() => process.exit(1));
-});
+createSymbols(args.input).then(async (symbols) => {
+  if (!symbols || !Object.keys(symbols).length) {
+    throw new Error(`No svg files found in input directory "${args.input}"`);
+  }
 
+  if (args.input === args.output) {
+    throw new Error('Cannot overwrite input directory, please provide another directory for output.');
+  }
+
+  try {
+    await fs.ensureDir(args.output);
+  } catch (err) {
+    throw new Error(`Output directory "${args.output}" does not exist.`);
+  }
+
+  await writeSymbolSvgFiles(symbols, { outputDir: args.output });
+  await writeSymbolReferenceFile(symbols, { outputDir: args.output, type: args.type });
+}).catch((err) => { throw new Error(err) });
+
+async function writeSymbolReferenceFile(symbols, { outputDir, type }) {
+  const json = JSON.stringify(symbols);
+  const ext = type === 'json' ? 'json' : 'js';
+  let refString;
+  switch(type) {
+    case 'esm':
+      refString = `export default ${json}`;
+      break;
+    case 'cjs':
+      refString = `modules.export = ${json}`;
+      break;
+    default:
+      refString = json;
+  };
+  const filename = path.join(outputDir, `symbols.${ext}`);
+  await fs.ensureFile(filename);
+  return fs.writeFile(filename, refString, 'utf-8');
+}
+
+async function writeSymbolSvgFiles(symbols, { outputDir }) {
+  return Promise.all(Object.entries(symbols).map(async ([ name, svgString ]) => {
+    const filename = path.join(outputDir, `${name}.svg`);
+    await fs.ensureFile(filename);
+    return fs.writeFile(filename, svgString, 'utf-8');
+  }));
+}
