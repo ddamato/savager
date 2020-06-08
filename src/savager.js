@@ -1,5 +1,6 @@
 // import consolidateSheet from './consolidateSheet.js';
 // const consolidateFnString = consolidateSheet.toString();
+import urljoin from 'url-join';
 import { injectionString, injectionScript } from './injectionManager.js';
 
 export default class Savager {
@@ -10,9 +11,11 @@ export default class Savager {
   }
 
   prepareAssets(assetNames, options) {
-    const resources = {};
     const { externalUrl, inject, classNames, toElement } = options || this._options;
     const primarySvgAttrs = { xmlns: 'http://www.w3.org/2000/svg' };
+    const resources = {
+      inject: inject ? injectionScript : Function.prototype,
+    };
 
     if (classNames) {
       primarySvgAttrs.class = [].concat(classNames).filter(Boolean).join(' ');
@@ -29,7 +32,8 @@ export default class Savager {
 
       if (externalUrl) {
         svgAttrs.exposure = 'external';
-        useAttrs.href = `${typeof externalUrl === 'string' ? externalUrl : ''}${assetName}.svg` + useAttrs.href;
+        const baseExternalUrl = typeof externalUrl === 'string' ? externalUrl : '';
+        useAttrs.href = urljoin(baseExternalUrl, `${assetName}.svg`, useAttrs.href);
       }
 
       let style = ''
@@ -58,10 +62,6 @@ export default class Savager {
     if (assetSheet && !externalUrl) {
       const { sheet } = completeAssetSheet(assetSheet);
       resources.sheet =  renderFn(sheet);
-    }
-
-    if (inject) {
-      resources.inject = injectionScript;
     }
 
     return resources;

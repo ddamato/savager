@@ -36,8 +36,12 @@ class InjectionManager {
   _replace(useNode, id) {
     const node = this.get(id);
     if (node) {
-      const clone = node.cloneNode(true)
-      useNode.parentNode.replaceWith(clone);
+      const clone = node.cloneNode(true);
+      clone.removeAttribute('id');
+      clone.setAttribute('replaced', '');
+      const svg = useNode.parentNode;
+      svg.hasAttributes() && [...svg.attributes].forEach(({ name, value }) => clone.setAttribute(name, value));
+      svg.replaceWith(clone);
       return clone;
     }
   }
@@ -60,7 +64,7 @@ class InjectionManager {
     return fetch(url).then((res) => res.text()).then((text) => {
       const dom = new DOMParser().parseFromString(text, 'image/svg+xml');
       const symbol = dom.querySelector('symbol');
-      if (symbol && symbol.children.length === 1) {
+      if (symbol) {
         return this.register(useNode, id, this._transformSymbol(symbol));
       }
       throw new Error(`Malformed external reference, please ensure '<symbol/>' assets.`);
@@ -79,7 +83,7 @@ class InjectionManager {
 
   _transformSymbol(symbol) {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.append(symbol.children);
+    symbol.children && [...symbol.children].forEach((child) => svg.appendChild(child));
     symbol.hasAttributes() && [...symbol.attributes].forEach(({ name, value }) => svg.setAttribute(name, value));
     return svg;
   }
