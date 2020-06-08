@@ -5,7 +5,7 @@ window.svgInjectionManager = {
   replace: (node) => console.log(node)
 }
 
-const options =  {classNames: 'savager-svg', toElement: true, inject: true };
+const options =  { classNames: 'savager-svg', toElement: true, inject: true };
 const savager = new Savager(savagerSymbols, options);
 const { assets, sheet } = savager.prepareAssets(['bang-triangle', 'clock-reverse']);
 

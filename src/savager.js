@@ -1,17 +1,5 @@
-const consolidateFn = (function (currentSheetId) {
-  const masterSheetId = 'savager-mastersheet';
-  const currentSheet = document.getElementById(currentSheetId);
-  let masterSheet = document.getElementById(masterSheetId);
-  if (!masterSheet) {
-    masterSheet = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    masterSheet.id = masterSheetId;
-    masterSheet.style.display = 'none';
-    document.body.appendChild(masterSheet);
-  }
-  Array.prototype.slice.call(currentSheet.querySelectorAll('symbol')).forEach((symbol) => masterSheet.appendChild(symbol));
-  currentSheet.remove();
-}).toString();
-
+// import consolidateSheet from './consolidateSheet.js';
+// const consolidateFnString = consolidateSheet.toString();
 const WINDOW_FN_CALL = 'window.svgInjectionManager && window.svgInjectionManager.replace(this)';
 
 export default class Savager {
@@ -22,7 +10,7 @@ export default class Savager {
   }
 
   prepareAssets(assetNames, options) {
-    const { externalUrl, consolidate, inject, classNames, toElement } = options || this._options;
+    const { externalUrl, inject, classNames, toElement } = options || this._options;
     const className = classNames ? `class="${[].concat(classNames).filter(Boolean).join(' ')}"` : '';
     let renderFn = (svgString) => svgString;
 
@@ -67,7 +55,7 @@ export default class Savager {
       .reduce((acc, [name, svgString]) => Object.assign(acc, { [name]: renderFn(svgString) }), {});
 
     if (assetSheet && !externalUrl) {
-      const { sheet } = completeAssetSheet(assetSheet, consolidate);
+      const { sheet } = completeAssetSheet(assetSheet);
       return { assets, sheet: renderFn(sheet) };
     }
 
@@ -80,18 +68,11 @@ export default class Savager {
   }
 }
 
-function completeAssetSheet(symbols, consolidate) {
-  const falseAttr = 'consolidate="false"';
+function completeAssetSheet(symbols) {
   const id = `savager-${Math.random().toString(36).substr(2, 9)}`;
-  const attrs = `id="${id}" xmlns="http://www.w3.org/2000/svg" style="display:none;" ${falseAttr}`;
-  const script = `(${consolidateFn})('${id}')`;
-  const consolidateScript = `<script type="text/javascript">${script}</script>`;
-  const svg = `<svg ${attrs}>${symbols}${consolidateScript}</svg>`;
-  const sheet = consolidate === false ? svg.replace(consolidateScript, '') : svg.replace(falseAttr, '');
-  return {
-    sheet,
-    script,
-  };
+  const attrs = `id="${id}" xmlns="http://www.w3.org/2000/svg" style="display:none;"`;
+  const sheet = `<svg ${attrs}>${symbols}</svg>`;
+  return { sheet };
 }
 
 function toElementFn(htmlString) {
