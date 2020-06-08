@@ -12,7 +12,10 @@ export default class Savager {
   prepareAssets(assetNames, options) {
     const { externalUrl, inject, classNames, toSvgElement, consolidate } = options || this._options;
     const primarySvgAttrs = { xmlns: 'http://www.w3.org/2000/svg' };
-    const prepareConsolidation = typeof consolidate === 'undefined' || Boolean(consolidate);
+    const assetSheetOptions = {
+      prepareConsolidation: typeof consolidate === 'undefined' || Boolean(consolidate),
+      primarySheetId: consolidate || 'savager-primarysheet',
+    }
     const resources = {
       inject: inject ? injectionScript : Function.prototype,
     };
@@ -58,7 +61,7 @@ export default class Savager {
     }, {});
 
     if (assetSheet && !externalUrl) {
-      const { sheet } = completeAssetSheet(assetSheet, prepareConsolidation);
+      const { sheet } = completeAssetSheet(assetSheet, assetSheetOptions);
       resources.sheet =  renderFn(sheet);
     }
 
@@ -71,12 +74,13 @@ export default class Savager {
   }
 }
 
-function completeAssetSheet(symbols, consolidate) {
+function completeAssetSheet(symbols, options) {
+  const { prepareConsolidation, primarySheetId } = options;
   const id = `savager-${Math.random().toString(36).substr(2, 9)}`;
   const attrs = `id="${id}" xmlns="http://www.w3.org/2000/svg" style="display:none;"`;
   let script = '';
-  if (consolidate) {
-    const iife = `(${consolidateSheet.toString()})('${id}')`.replace(/\"/g, `'`);
+  if (prepareConsolidation) {
+    const iife = `(${consolidateSheet.toString()})('${id}', '${primarySheetId}')`.replace(/\"/g, `'`);
     script = `<image href="#" onerror="${iife}"/>`;
   }
   const sheet = `<svg ${attrs}>${script}${symbols}</svg>`;

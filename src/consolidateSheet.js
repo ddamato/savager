@@ -1,5 +1,4 @@
-export default function (currentSheetId) {
-  const masterSheetId = 'savager-mastersheet';
+export default function (currentSheetId, masterSheetId) {
   const currentSheet = document.getElementById(currentSheetId);
   let masterSheet = document.getElementById(masterSheetId);
   if (!masterSheet) {
