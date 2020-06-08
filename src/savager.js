@@ -10,11 +10,18 @@ export default class Savager {
   }
 
   prepareAssets(assetNames, options) {
-    const { externalUrl, inject, classNames, toSvgElement, consolidate } = options || this._options;
+    const { 
+      externalUrl,
+      inject,
+      classNames,
+      toSvgElement,
+      consolidate,
+      autoAppend,
+    } = options || this._options;
     const primarySvgAttrs = { xmlns: 'http://www.w3.org/2000/svg' };
     const assetSheetOptions = {
       prepareConsolidation: typeof consolidate === 'undefined' || Boolean(consolidate),
-      primarySheetId: consolidate || 'savager-primarysheet',
+      primarySheetId: typeof consolidate === 'boolean' ? 'savager-primarysheet' : consolidate.toString(),
     }
     const resources = {
       inject: inject ? injectionScript : Function.prototype,
@@ -63,6 +70,9 @@ export default class Savager {
     if (assetSheet && !externalUrl) {
       const { sheet } = completeAssetSheet(assetSheet, assetSheetOptions);
       resources.sheet =  renderFn(sheet);
+      if (autoAppend) {
+        appendSheet(sheet);
+      }
     }
 
     return resources;
@@ -103,4 +113,12 @@ function toSvgElementFn(svgString) {
     return frag;
   }
   return svgString;
+}
+
+function appendSheet(sheet) {
+  if (typeof document !== 'undefined' && document.createElement) {
+    document.body.appendChild(toSvgElementFn(sheet));
+  } else {
+    throw new Error('Attempted to autoAppend without browser context');
+  }
 }
