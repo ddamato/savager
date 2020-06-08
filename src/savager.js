@@ -1,7 +1,6 @@
 // import consolidateSheet from './consolidateSheet.js';
 // const consolidateFnString = consolidateSheet.toString();
-import injectionScript from './injectionManager.js';
-const WINDOW_FN_CALL = 'window.svgInjectionManager && window.svgInjectionManager.replace(this)';
+import { injectionScript, injectionString } from './injectionManager.js';
 
 export default class Savager {
   constructor(symbols, options) {
@@ -37,8 +36,8 @@ export default class Savager {
       if (inject) {
         style = '<style>@keyframes nodeInserted { to { opacity: 1; } }</style>';
         useAttrs.style = 'animation: nodeInserted .1ms';
-        useAttrs.onanimationstart = WINDOW_FN_CALL;
-        useAttrs.onerror = WINDOW_FN_CALL;
+        useAttrs.onanimationstart = injectionString;
+        useAttrs.onerror = injectionString;
       }
 
       const svgString = `<svg ${toAttributes(svgAttrs)}>${style}<use ${toAttributes(useAttrs)}/></svg>`;

@@ -57,7 +57,10 @@ class InjectionManager {
     return fetch(url).then((res) => res.text()).then((text) => {
       const dom = new DOMParser().parseFromString(text, 'image/svg+xml');
       const symbol = dom.querySelector('symbol');
-      return this.register(useNode, id, this._transformSymbol(symbol));
+      if (symbol && symbol.children.length === 1) {
+        return this.register(useNode, id, this._transformSymbol(symbol));
+      }
+      throw new Error(`Malformed external reference, please ensure '<symbol/>' assets`);
     }).catch((err) => console.error(err));
   }
 
@@ -79,9 +82,14 @@ class InjectionManager {
   }
 }
 
-export default function() {
-  if (typeof window !== 'undefined') {
-    window.svgInjectionManager = new InjectionManager();
-    return window.svgInjectionManager;
-  }
-};
+const WINDOW_FN_REFERENCE = 'svgInjectionManager';
+
+export default {
+  injectionString: `window.${WINDOW_FN_REFERENCE} && window.${WINDOW_FN_REFERENCE}.replace(this)`,
+  injectionScript: () => {
+    if (typeof window !== 'undefined') {
+      window[WINDOW_FN_REFERENCE] = new InjectionManager();
+      return window[WINDOW_FN_REFERENCE];
+    }
+  },
+}
