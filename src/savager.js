@@ -1,5 +1,4 @@
-// import consolidateSheet from './consolidateSheet.js';
-// const consolidateFnString = consolidateSheet.toString();
+import consolidateSheet from './consolidateSheet.js';
 import urljoin from 'url-join';
 import { injectionStyle, injectionAttrs, injectionScript } from './injectionManager.js';
 
@@ -11,8 +10,9 @@ export default class Savager {
   }
 
   prepareAssets(assetNames, options) {
-    const { externalUrl, inject, classNames, toSvgElement } = options || this._options;
+    const { externalUrl, inject, classNames, toSvgElement, consolidate } = options || this._options;
     const primarySvgAttrs = { xmlns: 'http://www.w3.org/2000/svg' };
+    const prepareConsolidation = typeof consolidate === 'undefined' || Boolean(consolidate);
     const resources = {
       inject: inject ? injectionScript : Function.prototype,
     };
@@ -58,8 +58,10 @@ export default class Savager {
     }, {});
 
     if (assetSheet && !externalUrl) {
-      const { sheet } = completeAssetSheet(assetSheet);
+      const { sheet } = completeAssetSheet(assetSheet, prepareConsolidation);
+      console.log('str', sheet);
       resources.sheet =  renderFn(sheet);
+      console.log('elem', resources.sheet);
     }
 
     return resources;
@@ -71,10 +73,15 @@ export default class Savager {
   }
 }
 
-function completeAssetSheet(symbols) {
+function completeAssetSheet(symbols, consolidate) {
   const id = `savager-${Math.random().toString(36).substr(2, 9)}`;
   const attrs = `id="${id}" xmlns="http://www.w3.org/2000/svg" style="display:none;"`;
-  const sheet = `<svg ${attrs}>${symbols}</svg>`;
+  let script = '';
+  if (consolidate) {
+    const iife = `(${consolidateSheet.toString()})('${id}')`.replace(/\"/g, `'`);
+    script = `<image href="#" onerror="${iife}"/>`;
+  }
+  const sheet = `<svg ${attrs}>${script}${symbols}</svg>`;
   return { sheet };
 }
 
@@ -89,7 +96,9 @@ function toSvgElementFn(svgString) {
       elem = document.createElement('div');
     }
     elem.innerHTML = svgString;
-    return elem.firstElementChild;
+    const frag = document.createDocumentFragment();
+    [...elem.children].forEach((child) => frag.appendChild(child));
+    return frag;
   }
   return svgString;
 }
