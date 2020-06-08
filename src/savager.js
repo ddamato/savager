@@ -11,22 +11,28 @@ export default class Savager {
 
   prepareAssets(assetNames, options) {
     const { externalUrl, inject, classNames, toElement } = options || this._options;
-    const className = classNames ? `class="${[].concat(classNames).filter(Boolean).join(' ')}"` : '';
-    let renderFn = (svgString) => svgString;
+    const primarySvgAttrs = { 
+      xmlns: 'http://www.w3.org/2000/svg',
+    };
 
+    if (className) {
+      primarySvgAttrs.class = [].concat(classNames).filter(Boolean).join(' ');
+    }
+
+    let renderFn = (svgString) => svgString;
     if (toElement) {
       renderFn = typeof toElement === 'function' ? toElement : toElementFn;
     }
 
     const svgAssets = [].concat(assetNames).reduce(function collectAssets(assets, assetName) {
+      const svgAttrs = Object.assign({ exposure: 'internal' }, primarySvgAttrs);
       const useAttrs = {
         href: `#${assetName}`
       }
 
-      let exposure = 'internal';
       if (externalUrl) {
+        svgAttrs.exposure = 'external';
         useAttrs.href = `${typeof externalUrl === 'string' ? externalUrl : ''}${assetName}.svg` + useAttrs.href;
-        exposure = 'external';
       }
 
       let style = ''
@@ -37,10 +43,7 @@ export default class Savager {
         useAttrs.onerror = WINDOW_FN_CALL;
       }
 
-      const svgAttrsString = [className, exposure].filter(Boolean).join(' ');
-      const useAttrString = Object.entries(useAttrs).map(([ name, value ]) => `${name}="${value}"`).join(' ');
-
-      const svgString = `<svg ${svgAttrsString}>${style}<use ${useAttrString}/></svg>`;
+      const svgString = `<svg ${toAttributes(svgAttrs)}>${style}<use ${toAttributes(useAttrs)}/></svg>`;
       return Object.assign(assets, { [assetName]: svgString });
     }, {});
 
@@ -73,6 +76,10 @@ function completeAssetSheet(symbols) {
   const attrs = `id="${id}" xmlns="http://www.w3.org/2000/svg" style="display:none;"`;
   const sheet = `<svg ${attrs}>${symbols}</svg>`;
   return { sheet };
+}
+
+function toAttributes(obj) {
+  return Object.entries(obj).map(([ name, value ]) => `${name}="${value}"`).join(' ');
 }
 
 function toElementFn(htmlString) {
