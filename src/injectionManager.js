@@ -15,16 +15,17 @@ class InjectionManager {
       return Promise.resolve(this._replace(useNode, id));
     }
 
-    const inShadowDOM = useNode.getRootNode({ composed:true }) !== useNode.getRootNode();
-    if (exposure === 'internal') {
-      if (inShadowDOM) {
-        return this._fetchInternal(useNode, { id });
+    const root = useNode.getRootNode();
+    const rootReference = root.getElementById(id);
+    if (exposure === 'internal' && !rootReference) {
+      const inShadowBoundary = useNode.getRootNode({ composed:true }) !== root;
+      if (inShadowBoundary) {
+        return this._embedInternal(useNode, { id });
       }
-      return Promise.resolve('Asset found in document'); // Ask to skip or force?
     }
 
     if (exposure === 'external') {
-      return this._fetchExternal(useNode, { id, url });
+      return this._embedExternal(useNode, { id, url });
     }
 
     return Promise.reject('Could not find reference to replace node. Ensure the reference sheet or external url exist before executing this script');
@@ -44,7 +45,7 @@ class InjectionManager {
     return this._replace(useNode, id);
   }
 
-  _fetchInternal(useNode, { id }) {
+  _embedInternal(useNode, { id }) {
     const symbolReference = document.getElementById(id);
     if (symbolReference) {
       const symbol = symbolReference.cloneNode(true);
@@ -53,7 +54,7 @@ class InjectionManager {
     return Promise.reject(`Symbol (${id}) not found in document`);
   }
 
-  _fetchExternal(useNode, { id, url }) {
+  _embedExternal(useNode, { id, url }) {
     return fetch(url).then((res) => res.text()).then((text) => {
       const dom = new DOMParser().parseFromString(text, 'image/svg+xml');
       const symbol = dom.querySelector('symbol');

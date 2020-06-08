@@ -61,7 +61,7 @@ export default class Savager {
     }
 
     if (inject) {
-      resources.injectionScript = injectionScript;
+      resources.inject = injectionScript;
     }
 
     return resources;
