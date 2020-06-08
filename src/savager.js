@@ -1,4 +1,4 @@
-const iife = (function consolidate(currentSheetId) {
+const consolidateFn = (function (currentSheetId) {
   const masterSheetId = 'savager-mastersheet';
   const currentSheet = document.getElementById(currentSheetId);
   let masterSheet = document.getElementById(masterSheetId);
@@ -12,16 +12,17 @@ const iife = (function consolidate(currentSheetId) {
   currentSheet.remove();
 }).toString();
 
+const WINDOW_FN_CALL = 'window.svgInjectionManager && window.svgInjectionManager.replace(this)';
+
 export default class Savager {
   constructor(symbols, options) {
     this._symbols = {};
-    this._externalUrl = '';
-    const { externalUrl } = options || {};
-    this.storeSymbols(symbols).setExternalUrl(externalUrl);
+    this._options = Object.assign({}, options);
+    this.storeSymbols(symbols);
   }
 
   prepareAssets(assetNames, options) {
-    const { external, autoappend, consolidate, classNames, toElement } = options || {};
+    const { externalUrl, consolidate, inject, classNames, toElement } = options || this._options;
     const className = classNames ? `class="${[].concat(classNames).filter(Boolean).join(' ')}"` : '';
     let renderFn = (svgString) => svgString;
 
@@ -30,15 +31,29 @@ export default class Savager {
     }
 
     const svgAssets = [].concat(assetNames).reduce(function collectAssets(assets, assetName) {
-      let url = `#${assetName}`;
+      const useAttrs = {
+        href: `#${assetName}`
+      }
+
       let exposure = 'internal';
-      if (external) {
-        url = `${this._externalUrl}${assetName}.svg` + url;
+      if (externalUrl) {
+        useAttrs.href = `${typeof externalUrl === 'string' ? externalUrl : ''}${assetName}.svg` + useAttrs.href;
         exposure = 'external';
       }
-      const attrs = [className, exposure].filter(Boolean).join(' ');
-      const svgString = `<svg ${attrs}><use xlink:href="${url}"/></svg>`;
-      return Object.assign(assets, { [assetName]: renderFn(svgString) });
+
+      let style = ''
+      if (inject) {
+        style = '<style>@keyframes nodeInserted { to { opacity: 1; } }</style>';
+        useAttrs.style = 'animation: nodeInserted .1ms';
+        useAttrs.onanimationstart = WINDOW_FN_CALL;
+        useAttrs.onerror = WINDOW_FN_CALL;
+      }
+
+      const svgAttrsString = [className, exposure].filter(Boolean).join(' ');
+      const useAttrString = Object.entries(useAttrs).map(([ name, value ]) => `${name}="${value}"`).join(' ');
+
+      const svgString = `<svg ${svgAttrsString}>${style}<use ${useAttrString}/></svg>`;
+      return Object.assign(assets, { [assetName]: svgString });
     }, {});
 
     const symbols = this._symbols;
@@ -48,56 +63,28 @@ export default class Savager {
         : sheet
     }, '');
 
-    if (assetSheet) {
-      const { sheet, script } = completeAssetSheet(assetSheet, consolidate);
-      const isBrowser = typeof document !== 'undefined' && document.createElement;
-      if (isBrowser && autoappend && !external) {
-        const inject = (typeof consolidate !== 'boolean' || consolidate) && script;
-        autoAppend(sheet, inject);
-      }
-  
-      return {
-        assets: svgAssets,
-        sheet,
-      }
+    const assets = Object.entries(svgAssets)
+      .reduce((acc, [name, svgString]) => Object.assign(acc, { [name]: renderFn(svgString) }), {});
+
+    if (assetSheet && !externalUrl) {
+      const { sheet } = completeAssetSheet(assetSheet, consolidate);
+      return { assets, sheet: renderFn(sheet) };
     }
 
-    return { assets: svgAssets };
+    return { assets };
   }
 
   storeSymbols(symbols) {
     this._symbols = Object.assign({}, this._symbols, symbols);
     return this;
   }
-
-  setExternalUrl(url) {
-    if (url) {
-      this._externalUrl = url;
-    }
-    return this;
-  }
-}
-
-function autoAppend(sheet, script) {
-  const frag = document.createDocumentFragment();
-  const sheetTemplate = document.createElement('template');
-  sheetTemplate.innerHTML = sheet;
-  frag.appendChild(sheetTemplate.content);
-
-  if (script) {
-    const s = document.createElement('script');
-    s.setAttribute('autoappend', '');
-    s.appendChild(document.createTextNode(script))
-    frag.appendChild(s);
-  }
-  document.body.append(frag);
 }
 
 function completeAssetSheet(symbols, consolidate) {
   const falseAttr = 'consolidate="false"';
   const id = `savager-${Math.random().toString(36).substr(2, 9)}`;
   const attrs = `id="${id}" xmlns="http://www.w3.org/2000/svg" style="display:none;" ${falseAttr}`;
-  const script = `(${iife})('${id}')`;
+  const script = `(${consolidateFn})('${id}')`;
   const consolidateScript = `<script type="text/javascript">${script}</script>`;
   const svg = `<svg ${attrs}>${symbols}${consolidateScript}</svg>`;
   const sheet = consolidate === false ? svg.replace(consolidateScript, '') : svg.replace(falseAttr, '');
@@ -107,11 +94,11 @@ function completeAssetSheet(symbols, consolidate) {
   };
 }
 
-function toElementFn(svgString) {
+function toElementFn(htmlString) {
   if (typeof document !== 'undefined' && document.createElement) {
     const tmpl = document.createElement('template');
-    tmpl.innerHTML = svgString;
+    tmpl.innerHTML = htmlString;
     return tmpl.content;
   }
-  return svgString;
+  return htmlString;
 }
