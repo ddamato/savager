@@ -59,9 +59,7 @@ export default class Savager {
 
     if (assetSheet && !externalUrl) {
       const { sheet } = completeAssetSheet(assetSheet, prepareConsolidation);
-      console.log('str', sheet);
       resources.sheet =  renderFn(sheet);
-      console.log('elem', resources.sheet);
     }
 
     return resources;
