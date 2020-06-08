@@ -1,7 +1,7 @@
 // import consolidateSheet from './consolidateSheet.js';
 // const consolidateFnString = consolidateSheet.toString();
 import urljoin from 'url-join';
-import { injectionString, injectionScript } from './injectionManager.js';
+import { injectionStyle, injectionAttrs, injectionScript } from './injectionManager.js';
 
 export default class Savager {
   constructor(symbols, options) {
@@ -11,7 +11,7 @@ export default class Savager {
   }
 
   prepareAssets(assetNames, options) {
-    const { externalUrl, inject, classNames, toElement } = options || this._options;
+    const { externalUrl, inject, classNames, toSvgElement } = options || this._options;
     const primarySvgAttrs = { xmlns: 'http://www.w3.org/2000/svg' };
     const resources = {
       inject: inject ? injectionScript : Function.prototype,
@@ -22,13 +22,13 @@ export default class Savager {
     }
 
     let renderFn = (svgString) => svgString;
-    if (toElement) {
-      renderFn = typeof toElement === 'function' ? toElement : toElementFn;
+    if (toSvgElement) {
+      renderFn = typeof toSvgElement === 'function' ? toSvgElement : toSvgElementFn;
     }
 
     const svgAssets = [].concat(assetNames).reduce(function collectAssets(assets, assetName) {
       const svgAttrs = Object.assign({ exposure: 'internal' }, primarySvgAttrs);
-      const useAttrs = { href: `#${assetName}` };
+      let useAttrs = { href: `#${assetName}` };
 
       if (externalUrl) {
         svgAttrs.exposure = 'external';
@@ -38,10 +38,8 @@ export default class Savager {
 
       let style = ''
       if (inject) {
-        style = '<style>@keyframes nodeInserted { to { opacity: 1; } }</style>';
-        useAttrs.style = 'animation: nodeInserted .1ms';
-        useAttrs.onanimationstart = injectionString;
-        useAttrs.onerror = injectionString;
+        style = injectionStyle;
+        useAttrs = Object.assign(useAttrs, injectionAttrs);
       }
 
       const svgString = `<svg ${toAttributes(svgAttrs)}>${style}<use ${toAttributes(useAttrs)}/></svg>`;
@@ -84,11 +82,11 @@ function toAttributes(obj) {
   return Object.entries(obj).map(([ name, value ]) => `${name}="${value}"`).join(' ');
 }
 
-function toElementFn(htmlString) {
+function toSvgElementFn(svgString) {
   if (typeof document !== 'undefined' && document.createElement) {
     const tmpl = document.createElement('template');
-    tmpl.innerHTML = htmlString;
+    tmpl.innerHTML = svgString;
     return tmpl.content;
   }
-  return htmlString;
+  return svgString;
 }

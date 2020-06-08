@@ -90,12 +90,18 @@ class InjectionManager {
 }
 
 const WINDOW_FN_REFERENCE = 'svgInjectionManager';
-export const injectionString = `window.${WINDOW_FN_REFERENCE} && window.${WINDOW_FN_REFERENCE}.replace(this)`;
+const INJECTION_ANIMATION_NAME = 'nodeDetected';
+const injectionString = `window.${WINDOW_FN_REFERENCE} && window.${WINDOW_FN_REFERENCE}.replace(this)`;
+
+export const injectionStyle = `<style>@keyframes ${INJECTION_ANIMATION_NAME} { to { opacity: 1; } }</style>`;
+export const injectionAttrs = {
+  style: `animation: ${INJECTION_ANIMATION_NAME} .1ms`,
+  onanimationstart: injectionString,
+  onerror: injectionString,
+}
 export const injectionScript = () => {
   if (typeof window !== 'undefined') {
     window[WINDOW_FN_REFERENCE] = new InjectionManager();
     return window[WINDOW_FN_REFERENCE];
   }
 }
-
-export default InjectionManager;
