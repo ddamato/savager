@@ -16,15 +16,18 @@ class InjectionManager {
     }
 
     const inShadowDOM = useNode.getRootNode({ composed:true }) !== useNode.getRootNode();
-    if (exposure === 'internal' && inShadowDOM) {
-      return this._fetchInternal(useNode, { id });
+    if (exposure === 'internal') {
+      if (inShadowDOM) {
+        return this._fetchInternal(useNode, { id });
+      }
+      return Promise.resolve('Asset found in document'); // Ask to skip or force?
     }
 
     if (exposure === 'external') {
       return this._fetchExternal(useNode, { id, url });
     }
 
-    return Promise.reject('Could not find reference to replace node:', useNode);
+    return Promise.reject('Could not find reference to replace node. Ensure the reference sheet or external url exist before executing this script');
   }
 
   _replace(useNode, id) {
@@ -45,15 +48,16 @@ class InjectionManager {
     const symbolReference = document.getElementById(id);
     if (symbolReference) {
       const symbol = symbolReference.cloneNode(true);
-      return Promise.resolve(this.register(useNode, id, transformSymbol(symbol)));
+      return Promise.resolve(this.register(useNode, id, this._transformSymbol(symbol)));
     }
     return Promise.reject(`Symbol (${id}) not found in document`);
   }
 
   _fetchExternal(useNode, { id, url }) {
     return fetch(url).then((res) => res.text()).then((text) => {
-      const symbol = new DOMParser().parseFromString(text, 'image/svg+xml');
-      return this.register(useNode, id, transformSymbol(symbol));
+      const dom = new DOMParser().parseFromString(text, 'image/svg+xml');
+      const symbol = dom.querySelector('symbol');
+      return this.register(useNode, id, this._transformSymbol(symbol));
     }).catch((err) => console.error(err));
   }
 
@@ -75,3 +79,9 @@ class InjectionManager {
   }
 }
 
+export default function() {
+  if (typeof window !== 'undefined') {
+    window.svgInjectionManager = new InjectionManager();
+    return window.svgInjectionManager;
+  }
+};

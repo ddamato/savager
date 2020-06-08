@@ -1,5 +1,6 @@
 // import consolidateSheet from './consolidateSheet.js';
 // const consolidateFnString = consolidateSheet.toString();
+import injectionScript from './injectionManager.js';
 const WINDOW_FN_CALL = 'window.svgInjectionManager && window.svgInjectionManager.replace(this)';
 
 export default class Savager {
@@ -10,6 +11,7 @@ export default class Savager {
   }
 
   prepareAssets(assetNames, options) {
+    const resources = {};
     const { externalUrl, inject, classNames, toElement } = options || this._options;
     const primarySvgAttrs = { xmlns: 'http://www.w3.org/2000/svg' };
 
@@ -50,15 +52,20 @@ export default class Savager {
         : sheet
     }, '');
 
-    const assets = Object.entries(svgAssets)
-      .reduce((acc, [name, svgString]) => Object.assign(acc, { [name]: renderFn(svgString) }), {});
+    resources.assets = Object.entries(svgAssets).reduce(function renderAssets(acc, [name, svgString]) {
+      return Object.assign(acc, { [name]: renderFn(svgString) });
+    }, {});
 
     if (assetSheet && !externalUrl) {
       const { sheet } = completeAssetSheet(assetSheet);
-      return { assets, sheet: renderFn(sheet) };
+      resources.sheet =  renderFn(sheet);
     }
 
-    return { assets };
+    if (inject) {
+      resources.injectionScript = injectionScript;
+    }
+
+    return resources;
   }
 
   storeSymbols(symbols) {
