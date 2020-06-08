@@ -1,7 +1,7 @@
 import savagerSymbols from './svg/symbols.js';
 import Savager from './savager/savager.esm.js';
 
-const options =  { classNames: 'savager-svg', externalUrl: 'svg' };
+const options =  { classNames: 'savager-svg', externalUrl: 'svg', toSvgElement: true };
 const savager = new Savager(savagerSymbols, options);
 const { assets, sheet, inject } = savager.prepareAssets(['bang-triangle', 'clock-reverse']);
 
@@ -16,5 +16,5 @@ Object.entries(assets).forEach(([name, elem]) => {
   const li = document.createElement('li');
   inventory.appendChild(li);
   li.dataset.name = name;
-  li.innerHTML = elem;
+  li.appendChild(elem);
 });

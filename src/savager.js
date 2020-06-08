@@ -82,11 +82,14 @@ function toAttributes(obj) {
   return Object.entries(obj).map(([ name, value ]) => `${name}="${value}"`).join(' ');
 }
 
+let elem;
 function toSvgElementFn(svgString) {
   if (typeof document !== 'undefined' && document.createElement) {
-    const tmpl = document.createElement('template');
-    tmpl.innerHTML = svgString;
-    return tmpl.content;
+    if (!elem) {
+      elem = document.createElement('div');
+    }
+    elem.innerHTML = svgString;
+    return elem.firstElementChild;
   }
   return svgString;
 }
