@@ -12,7 +12,7 @@ export default class Savager {
   prepareAssets(assetNames, options) {
     const { 
       externalUrl,
-      inject,
+      attemptInject,
       classNames,
       toSvgElement,
       consolidate,
@@ -23,9 +23,11 @@ export default class Savager {
       prepareConsolidation: typeof consolidate === 'undefined' || Boolean(consolidate),
       primarySheetId: typeof consolidate === 'boolean' ? 'savager-primarysheet' : consolidate.toString(),
     }
-    const resources = {
-      inject: inject ? injectionScript : Function.prototype,
-    };
+    const resources = {};
+
+    if (attemptInject) {
+      resources.inject = injectionScript;
+    }
 
     if (classNames) {
       primarySvgAttrs.class = [].concat(classNames).filter(Boolean).join(' ');

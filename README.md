@@ -40,7 +40,7 @@ The default export of the package, also available as a named export where needed
 const Savager = require('savager');
 const symbols = require('./path/to/svgs.js');
 
-const savager = new Savager(symbols);
+const savager = new Savager(symbols, options);
 ```
 
 ```js
@@ -52,6 +52,48 @@ const savager = new Savager(symbols);
 ```
 
 The constructor takes two arguments, the first argument (`symbols`) is a well-formed object of symbols. You may use the [`create-symbols` CLI](#cli) script included in this package to help prepare the symbols. The second argument (`options`) can include a custom configuration from the options below.
+
+### `savager.prepareAssets(assetNames, options)`
+This is the primary method you'll be invoking, it will return all the assets you'll need to include in your app that you request by name.
+
+```js
+import Savager from 'savager';
+import symbols from './path/to/svgs.js';
+
+const savager = new Savager(symbols);
+const options = {
+  attemptInject: false,
+  autoAppend: false,
+  classNames: null,
+  consolidate: true,
+  externalUrl: false,
+  toSvgElement: false,
+};
+const { assets, sheet, inject } = savager.prepareAssets(['balloon', 'checkmark'],options);
+```
+
+The method returns an object with up to 3 keys.
+| Key | Value | Description |
+| --- | ----- | ----------- |
+| `assets` | `object` | A map of all your requested assets, accessed by the asset name. The value will depend on what was set as `toSvgElement`. |
+| `sheet` | `undefined`, `string`, `SVGElement`, or custom output depending on options | This is the reference sheet, it can be provided as a string or as an element (using `toSvgElement`). This will be `undefined` when using the `externalUrl` option. |
+| `inject` | `undefined`, or `function` | The function to include in your app to listen for `<svg>` elements that fail find a reference. This will only return a function if `attemptInject` is set as `true` in the options. |
+
+#### `savager.storeSymbols(symbols)`;
+This helper method allows you to include additional symbols to reference _after_ calling the constructor.
+
+### Options
+These are the available options which can be passed into either the second parameter of the `new Savager()` constructor which _affects every call of `.prepareAssets()` from the instance_ **or** the second parameter of the `.prepareAssets()` method which _affects only that call_.
+| Name | Value | Default | Description |
+| ---- | ----- | ------- | ----------- |
+| `attemptInject` | `Boolean` | `false` | desc |
+| `autoAppend` | `Boolean` | `false` | desc |
+| `classNames` | `String` or `Array<String>` | `void` | desc |
+| `consolidate` | `Boolean` or `String` | `true` | desc |
+| `externalUrl` | `Boolean` or `String` | `void` | desc |
+| `toSvgElement` | `Boolean` or `Function` | `false` | desc |
+
+---
 
 ### `createSymbols(pathOrObject)`
 
