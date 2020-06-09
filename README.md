@@ -83,15 +83,37 @@ The method returns an object with up to 3 keys.
 This helper method allows you to include additional symbols to reference _after_ calling the constructor.
 
 ### Options
-These are the available options which can be passed into either the second parameter of the `new Savager()` constructor which _affects every call of `.prepareAssets()` from the instance_ **or** the second parameter of the `.prepareAssets()` method which _affects only that call_.
-| Name | Value | Default | Description |
-| ---- | ----- | ------- | ----------- |
-| `attemptInject` | `Boolean` | `false` | desc |
-| `autoAppend` | `Boolean` | `false` | desc |
-| `classNames` | `String` or `Array<String>` | `void` | desc |
-| `consolidate` | `Boolean` or `String` | `true` | desc |
-| `externalUrl` | `Boolean` or `String` | `void` | desc |
-| `toSvgElement` | `Boolean` or `Function` | `false` | desc |
+These are the available options which can be passed into either the second parameter of the `new Savager()` constructor which _affects every call of `.prepareAssets()` from the instance_ **or** the second parameter of the `.prepareAssets()` method which _affects only that call_. The description explains the return value after calling `.prepareAssets()`.
+
+#### `attemptInject`
+**`Boolean`** `false`
+
+When set to `true`, provides the `inject` function to be added to the page. Also adds listeners to the SVGs provided under the `assets` key to talk with the `inject` function.
+
+#### `autoAppend`
+**`Boolean`** `false`
+
+Will attempt to automatically append the reference sheet to the `document.body` if the `.prepareAssets()` method was called on the page.
+
+#### `classNames`
+**`String` or `Array<String>`** `void`
+
+One or a list of class names to add to the SVG assets.
+
+#### `consolidate`
+**`Boolean` or `String`** `true`
+
+When set to `true`, this will attempt to consolidate reference sheets if multiple usages of Savager are used on the page. When set to a String, it will be the `id` of the single reference sheet on the page after consolidation. Setting to `false` will not consolidate reference sheets.
+
+#### `externalUrl`
+**`Boolean` or `String`** `void`
+
+If your assets are hosted externally (eg. CDN), you can provide the path to the assets here. Using this will not provide a `sheet` key when using this option.
+
+#### `toSvgElement`
+**`Boolean` or `Function`** `false`
+
+When providing a function, the input will be SVG asset string which may transform into an element for the needs of your app.
 
 ---
 
