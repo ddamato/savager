@@ -10,6 +10,7 @@
     "build": "rollup -c",
     "build:docs": "npm run build && mkdir -p ./docs/savager && cp -r ./dist/*.js ./docs/savager",
     "prepare": "npm run build",
+    "test": "nyc mocha test/**/*.test.js -r esm",
     "version": "auto-changelog -p && git add CHANGELOG.md"
   },
   "bin": {
@@ -33,6 +34,9 @@
     "@rollup/plugin-commonjs": "^13.0.0",
     "@rollup/plugin-node-resolve": "^8.0.1",
     "auto-changelog": "^2.0.0",
+    "esm": "^3.2.25",
+    "mocha": "^7.2.0",
+    "nyc": "^15.1.0",
     "rollup": "^2.13.1",
     "rollup-plugin-terser": "^6.1.0"
   },
