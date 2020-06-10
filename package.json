@@ -34,6 +34,7 @@
     "@rollup/plugin-commonjs": "^13.0.0",
     "@rollup/plugin-node-resolve": "^8.0.1",
     "auto-changelog": "^2.0.0",
+    "chai": "^4.2.0",
     "esm": "^3.2.25",
     "mocha": "^7.2.0",
     "nyc": "^15.1.0",
