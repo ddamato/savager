@@ -119,6 +119,17 @@ When providing a function, the input will be SVG asset string which may transfor
 
 ### `createSymbols(pathOrObject)`
 
+This method takes a single argument, either a path to SVG files or an object where the keys are asset names (used for look up) and the value is a SVG XML string (`<svg></svg>`). When using the directory path, the file name will become the asset name.
+
+This method is also available as a named export from the package. You can use this if you have your own processing step before preparing the SVG files, perhaps with something like [SVGO](https://github.com/svg/svgo).
+
+```js
+const { createSymbols } = require('savager');
+
+const savagerSymbols = createSymbols('path/to/svg');
+console.log(savagerSymbols); // { balloon: '<svg><symbol>...</symbol></svg>' }
+```
+
 ## CLI
 The `create-symbols` script targets a directory of `.svg` assets and prepares the necessary files for working with Savager. It uses the [`createSymbols` API method](createSymbols(pathOrObject)) under the hood.
 
