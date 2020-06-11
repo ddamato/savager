@@ -1,8 +1,17 @@
+import jsdomGlobal from 'jsdom-global';
 import { expect } from 'chai';
 
 import Savager from '../src/savager.js';
 
 describe('Savager', function () {
+  let jsdom = null;
+
+  afterEach(function () {
+    if (typeof jsdom === 'function') {
+      jsdom();
+      jsdom = null;
+    }
+  });
 
   it('should be a function', function () {
     expect(Savager).to.be.a('function');
@@ -65,5 +74,23 @@ describe('Savager', function () {
     const savager = new Savager({ balloon: symbol }, { autoAppend: true });
     const toThrow = () => { savager.prepareAssets('balloon') };
     expect(toThrow).to.throw();
+  });
+
+  it('should attempt to automatically append a reference sheet', function() {
+    jsdom = jsdomGlobal();
+    const symbol = '<svg><symbol viewBox="0 0 24 24"><path/></symbol></svg>';
+    const savager = new Savager({ balloon: symbol }, { autoAppend: true });
+    const { assets } = savager.prepareAssets('balloon');
+    expect(assets.balloon).to.exist;
+    expect(document.body.innerHTML).to.include('style="display:none;"');
+  });
+
+  it('should use default render function when requested', function() {
+    jsdom = jsdomGlobal();
+    const symbol = '<svg><symbol viewBox="0 0 24 24"><path/></symbol></svg>';
+    const savager = new Savager({ balloon: symbol }, { toSvgElement: true });
+    const { assets } = savager.prepareAssets('balloon');
+    expect(assets.balloon).to.exist;
+    expect(assets.balloon.children).to.exist;
   });
 });
