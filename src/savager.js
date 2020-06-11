@@ -21,8 +21,14 @@ export default class Savager {
     const primarySvgAttrs = { xmlns: 'http://www.w3.org/2000/svg' };
     const assetSheetOptions = {
       prepareConsolidation: typeof consolidate === 'undefined' || Boolean(consolidate),
-      primarySheetId: typeof consolidate === 'boolean' ? 'savager-primarysheet' : consolidate.toString(),
     }
+
+    if (assetSheetOptions.prepareConsolidation) {
+      assetSheetOptions.primarySheetId = typeof consolidate === 'string'
+        ? consolidate.toString() 
+        : 'savager-primarysheet';
+    }
+
     const resources = {};
 
     if (attemptInject) {
@@ -49,7 +55,7 @@ export default class Savager {
       }
 
       let style = ''
-      if (inject) {
+      if (attemptInject) {
         style = injectionStyle;
         useAttrs = Object.assign(useAttrs, injectionAttrs);
       }
