@@ -8,10 +8,12 @@
 body {
   margin: 0;
   color: #fff;
-  background: #024059;
+  background: #17736A;
   font-family: "Poppins", sans-serif;
   display: flex;
   min-height: 100vh;
+  padding-right: 1rem;
+  padding-bottom: 1rem;
 }
 
 nav {
@@ -19,6 +21,10 @@ nav {
   min-width: 200px;
   padding: 1rem;
   color: #fff;
+}
+
+a {
+  color: inherit;
 }
 
 nav svg {
@@ -33,10 +39,11 @@ main {
   padding: 0 1rem;
   background: #fff;
   color: #000;
-  border-radius: 1rem;
-  margin: 1rem 2rem 2rem 1rem;
+  border-radius: .5rem;
+  max-width: 500px;
+  margin: 1rem auto;
   border: 2px solid #F28D35;
-  filter: drop-shadow(.6em .6em 0 #F28D35);
+  filter: drop-shadow(.7em .7em 0 #F28D35);
 }
 
 h1 {
@@ -57,8 +64,7 @@ main .savager-logo {
 
 section {
   padding: .5rem;
-  max-width: 500px;
-  margin: 0 auto;
+  color: #025159;
 }
 
 .inventory {
