@@ -2,6 +2,16 @@
   box-sizing: border-box;
 }
 
+h1 {
+  text-align: center;
+}
+
+.savager-logo {
+  width: 12.8em;
+  height: 2.6em;
+  text-align: center;
+}
+
 .inventory {
   list-style: none;
   margin: 0;

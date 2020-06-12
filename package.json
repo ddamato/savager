@@ -10,6 +10,7 @@
     "build": "rollup -c",
     "build:docs": "npm run build && mkdir -p ./docs/savager && cp -r ./dist/*.js ./docs/savager",
     "prepare": "npm run build",
+    "prepare:assets": "node ./bin/create-symbols.js -i docs/svg -o docs/assets -t esm",
     "test": "nyc mocha test/**/*.test.js -r esm",
     "version": "auto-changelog -p && git add CHANGELOG.md"
   },
