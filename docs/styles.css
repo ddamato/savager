@@ -2,14 +2,63 @@
   box-sizing: border-box;
 }
 
-h1 {
-  text-align: center;
+/* https://share.getcloudapp.com/L1upkJp2 */
+
+
+body {
+  margin: 0;
+  color: #fff;
+  background: #024059;
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  min-height: 100vh;
 }
 
-.savager-logo {
-  width: 12.8em;
+nav {
+  overflow-y: auto;
+  min-width: 200px;
+  padding: 1rem;
+  color: #fff;
+}
+
+nav svg {
+  width: 6rem;
+  height: 2rem;
+  fill: currentColor;
+}
+
+main {
+  overflow-y: auto;
+  flex: 1;
+  padding: 0 1rem;
+  background: #fff;
+  color: #000;
+  border-radius: 1rem;
+  margin: 1rem 2rem 2rem 1rem;
+  border: 2px solid #F28D35;
+  filter: drop-shadow(.6em .6em 0 #F28D35);
+}
+
+h1 {
+  display: flex;
+}
+
+h2, h3 {
+  font-family: "Zilla Slab", serif;
+}
+
+main .savager-logo {
+  width: 7.8em;
   height: 2.6em;
-  text-align: center;
+  display: inline-flex;
+  fill: currentColor;
+  margin-left: -4px;
+}
+
+section {
+  padding: .5rem;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
 .inventory {
