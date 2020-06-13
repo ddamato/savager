@@ -4,73 +4,114 @@
 
 /* https://share.getcloudapp.com/L1upkJp2 */
 
+:root {
+  --accentColor: rgb(250, 148, 40);
+  --mainColor: rgb(245, 245, 245);
+  --subtleColor: rgb(170, 170, 170);
+}
 
 body {
   margin: 0;
-  color: #fff;
-  background: #17736A;
+  color: var(--mainColor);
+  background: rgb(41, 52, 69);
   font-family: "Poppins", sans-serif;
   display: flex;
   min-height: 100vh;
   padding-right: 1rem;
   padding-bottom: 1rem;
+  justify-content: center;
 }
 
-nav {
-  overflow-y: auto;
-  min-width: 200px;
-  padding: 1rem;
-  color: #fff;
-}
-
-a {
+svg, a {
   color: inherit;
-}
-
-nav svg {
-  width: 6rem;
-  height: 2rem;
   fill: currentColor;
 }
 
-main {
-  overflow-y: auto;
-  flex: 1;
+.textcode {
+  white-space: pre-line;
+  border: 0;
+  width: 100%;
   padding: 0 1rem;
-  background: #fff;
-  color: #000;
-  border-radius: .5rem;
-  max-width: 500px;
-  margin: 1rem auto;
-  border: 2px solid #F28D35;
-  filter: drop-shadow(.7em .7em 0 #F28D35);
 }
 
-h1 {
-  display: flex;
-}
-
-h2, h3 {
-  font-family: "Zilla Slab", serif;
-}
-
-main .savager-logo {
-  width: 7.8em;
-  height: 2.6em;
-  display: inline-flex;
-  fill: currentColor;
-  margin-left: -4px;
-}
-
-section {
-  padding: .5rem;
-  color: #025159;
-}
-
-.inventory {
+ul.none {
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+.neom-concave {
+  --background-hs: 216, 25%;
+  --background-shadow: 16%;
+  --background-highlight: 32%;
+  --background-offset: .5em;
+  border-radius: 2em;
+  background: hsl(var(--background-hs), 22%);
+  box-shadow:  var(--background-offset) var(--background-offset) calc(var(--background-offset) * 2) hsl(var(--background-hs), var(--background-shadow)), 
+               calc(var(--background-offset) * -1) calc(var(--background-offset) * -1) calc(var(--background-offset) * 2) hsl(var(--background-hs), var(--background-highlight));
+}
+
+.neom-convex {
+  --background-hs: 216, 25%;
+  --background-shadow: 16%;
+  --background-highlight: 32%;
+  --background-offset: .5em;
+  border-radius: 2em;
+  background: hsl(var(--background-hs), 22%);
+  box-shadow: inset var(--background-offset) var(--background-offset) calc(var(--background-offset) * 2) hsl(var(--background-hs), var(--background-shadow)), 
+              inset calc(var(--background-offset) * -1) calc(var(--background-offset) * -1) calc(var(--background-offset) * 2) hsl(var(--background-hs), var(--background-highlight));
+}
+
+
+.navigation {
+  overflow-y: auto;
+  min-width: 200px;
+  margin: 1rem;
+  padding: 1rem;
+}
+
+.navigation .savager-logo {
+  width: 6rem;
+  height: 2rem;
+  color: var(--subtleColor);
+  margin-bottom: 1rem;
+}
+
+.navigation li {
+  padding: .5rem 1rem;
+  margin-bottom: 1rem;
+  color: var(--subtleColor);
+  font-size: .8em;
+  font-weight: 500;
+}
+
+.navigation li:hover {
+  color: var(--mainColor);
+}
+
+.navigation a {
+  display: block;
+  text-decoration: none;
+}
+
+.content {
+  --contentWidth: 40em;
+  margin: 1rem 0;
+  flex: 1 1 var(--contentWidth);
+  max-width: var(--contentWidth);
+}
+
+.content .savager-logo {
+  width: 12rem;
+  height: 4rem;
+}
+
+.content h1 {
+  margin: 0;
+}
+
+section {
+  padding: 1rem;
 }
 
 [data-name]:before {
