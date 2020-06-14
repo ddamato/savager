@@ -18,7 +18,7 @@ Then import `Savager` and the symbols into your build script. The `assets` outpu
 
 ```js
 import Savager from 'savager';
-import symbols from './manifest.json';
+import symbols from './manifest.js';
 
 const savager = new Savager(symbols);
 const { assets, sheet } = savager.prepareAssets('balloon');
@@ -30,10 +30,41 @@ When hosting assets externally, they should still be processed first by the `cre
 
 ```js
 import Savager from 'savager'; /* The constructor */
-import symbols from './manifest.json'; /* manifest.json, created from the `create-symbols` script */
+import symbols from './manifest.js'; /* manifest.js, created from the `create-symbols` script */
 ```
 
-The assets created should be the ones hosted externally. Savager will then construct the urls based on the 
+The assets created should be the ones hosted externally. Savager will then construct the urls based on the `externalUrl` option provided. It's probably best to set this in the constructor options.
+
+```js
+import Savager from 'savager';
+import symbols from './manifest.js';
+
+const SVG_CDN_URL = 'https://assets.cdn.com/path/to/assets';
+const savager = new Savager(symbols, { externalUrl: SVG_CDN_URL });
+```
+
+## Internal Assets
+If you aren't hosting assets externally, you'll need to include a reference sheet on the page. You can let the `prepareAssets()` method attempt to append it to the `document.body`:
+
+```js
+import Savager from 'savager';
+import symbols from './manifest.js';
+
+const savager = new Savager(symbols, { autoAppend: true });
+```
+This will only work in a browser context. When running the script on a server, you'll need to include the reference sheet in the response and write the returned reference sheet into the HTML:
+
+```js
+import nunjucks from 'nunjucks';
+import Savager from 'savager';
+import symbols from './manifest.js';
+
+const savager = new Savager(symbols);
+const { assets, sheet } = savager.prepareAssets('balloon');
+const html = nunjucks.render('index.njk', { assets, sheet });
+```
+
+The example above uses [Nunjucks](https://mozilla.github.io/nunjucks/) as a templating engine.
 
 ## Examples
 

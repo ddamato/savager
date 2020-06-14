@@ -11,6 +11,10 @@
   --navigationWidth: 200px;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   color: var(--mainColor);
@@ -71,7 +75,7 @@ pre {
   --background-hs: 216, 25%;
   --background-shadow: 16%;
   --background-highlight: 32%;
-  --background-offset: .5em;
+  --background-offset: .25em;
   border-radius: 2em;
   background: hsl(var(--background-hs), 22%);
   box-shadow: inset var(--background-offset) var(--background-offset) calc(var(--background-offset) * 2) hsl(var(--background-hs), var(--background-shadow)), 
