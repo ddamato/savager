@@ -17,21 +17,12 @@ body {
   font-family: "Poppins", sans-serif;
   display: flex;
   min-height: 100vh;
-  padding-right: 1rem;
-  padding-bottom: 1rem;
   justify-content: center;
 }
 
 svg, a {
   color: inherit;
   fill: currentColor;
-}
-
-.textcode {
-  white-space: pre-line;
-  border: 0;
-  width: 100%;
-  padding: 0 1rem;
 }
 
 ul.none {
@@ -76,7 +67,6 @@ pre {
 .navigation {
   overflow-y: auto;
   min-width: 200px;
-  margin: 1rem;
   padding: 1rem;
 }
 
@@ -106,7 +96,7 @@ pre {
 
 .content {
   --contentWidth: 40em;
-  margin: 1rem 0;
+  padding: 1rem;
   flex: 1 1 var(--contentWidth);
   max-width: var(--contentWidth);
 }

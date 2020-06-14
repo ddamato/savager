@@ -11,7 +11,14 @@
   </head>
   <body>
     <nav class="navigation">
-     {{ navigation | safe }}
+    <svg exposure="internal" xmlns="http://www.w3.org/2000/svg" class="savager-logo">
+      <use href="#savager-logo"></use>
+    </svg>
+     <ul class="none">
+      {% for item in navigation %}
+        <li class="neom-concave"><a href="{{ item.href }}">{{ item.text }}</a></li>
+      {% endfor %}
+     </ul>
     </nav>
     <main class="content">
       {{ content | safe }}
