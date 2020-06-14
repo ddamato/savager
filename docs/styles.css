@@ -51,7 +51,17 @@ ul.none {
                calc(var(--background-offset) * -1) calc(var(--background-offset) * -1) calc(var(--background-offset) * 2) hsl(var(--background-hs), var(--background-highlight));
 }
 
-.neom-convex {
+pre {
+  padding: 1rem;
+}
+
+.token.string,
+.token.keyword,
+.token.property {
+    color: var(--accentColor);
+}
+
+.neom-convex, pre {
   --background-hs: 216, 25%;
   --background-shadow: 16%;
   --background-highlight: 32%;

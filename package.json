@@ -8,7 +8,8 @@
   "unpkg": "dist/savager.umd.js",
   "scripts": {
     "build": "rollup -c",
-    "build:docs": "npm run build && mkdir -p ./docs/savager && cp -r ./dist/*.js ./docs/savager",
+    "copy:dist": "cp -r ./dist/*.js ./docs/savager",
+    "build:docs": "npm run build && npm run copy:dist && node ./bin/build-docs.js",
     "prepare": "npm run build",
     "prepare:assets": "node ./bin/create-symbols.js -i docs/svg -o docs/assets -t esm",
     "test": "nyc mocha test/**/*.test.js -r esm",
@@ -37,15 +38,19 @@
     "auto-changelog": "^2.0.0",
     "chai": "^4.2.0",
     "esm": "^3.2.25",
+    "fs-extra": "^9.0.1",
+    "html-minifier": "^4.0.0",
     "jsdom": "^16.2.2",
     "jsdom-global": "^3.0.2",
+    "markdown-it": "^11.0.0",
+    "markdown-it-prism": "^2.0.5",
     "mocha": "^7.2.0",
+    "nunjucks": "^3.2.1",
     "nyc": "^15.1.0",
     "rollup": "^2.13.1",
     "rollup-plugin-terser": "^6.1.0"
   },
   "dependencies": {
-    "fs-extra": "^9.0.1",
     "minimist": "^1.2.5",
     "url-join": "^4.0.1"
   }

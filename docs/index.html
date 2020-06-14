@@ -1,40 +1,6 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <title>Savager Example Page</title>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <meta content="chrome=1" http-equiv="X-UA-Compatible">
-    <meta content="width=device-width,initial-scale=1" name="viewport">
-    <meta name="description" content="Savager Example Page">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
-    <link href="styles.css" rel="stylesheet"/>
-    <!--<script src="savager/savager.umd.js"></script>-->
-  </head>
-  <body>
-    <nav class="navigation">
-      <svg exposure="internal" xmlns="http://www.w3.org/2000/svg" class="savager-logo"><use href="#savager-logo"></use></svg>
-      <ul class="none">
-        <li class="neom-concave"><a href="#">Getting Started</a></li>
-        <li class="neom-concave"><a href="#">Reference Sheet</a></li>
-        <li class="neom-concave"><a href="#">Options</a></li>
-      </ul>
-    </nav>
-    <main class="content">
-      <section>
-        <h1></h1>
-        <h2>Examples</h2>
-        <ul class="none inventory"></ul>
-        <pre class="textcode neom-convex">
-        <code>
-        import Savager from 'savager';
-        import symbols from './symbols.js'
+<!doctype html><html lang="en"><head><title>Savager Example Page</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="chrome=1" http-equiv="X-UA-Compatible"><meta content="width=device-width,initial-scale=1" name="viewport"><meta name="description" content="Savager Example Page"><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet"><link href="styles.css" rel="stylesheet"></head><body><nav class="navigation"></nav><main class="content"><h1>Savager</h1><h2>Heading 2</h2><p>This is a paragraph.</p><pre class="language-js"><code class="language-js"><span class="token keyword">import</span> Savager <span class="token keyword">from</span> <span class="token string">'savager'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> symbols <span class="token keyword">from</span> <span class="token string">'./symbols.svg'</span><span class="token punctuation">;</span>
 
-        const savager = new Savager(symbols);
-        const { assets } = savager.prepareAssets('bang-triangle');
-        </code>
-        </pre>
-      </section>
-    </main>
-    <script type="module" src="script.js"></script>
-  </body>
-</html>
+<span class="token keyword">const</span> savager <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Savager</span><span class="token punctuation">(</span>symbols<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token punctuation">{</span> assets <span class="token punctuation">}</span> <span class="token operator">=</span> savager<span class="token punctuation">.</span><span class="token function">prepareAssets</span><span class="token punctuation">(</span><span class="token string">'balloon'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></main><script type="module" src="script.js"></script></body></html>
