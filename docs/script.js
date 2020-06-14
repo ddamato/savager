@@ -1,4 +1,4 @@
-import savagerSymbols from './assets/symbols.js';
+import savagerSymbols from './assets/manifest.js';
 import Savager from './savager/savager.esm.js';
 
 const savager = new Savager(savagerSymbols);

@@ -16,13 +16,17 @@ body {
   background: rgb(41, 52, 69);
   font-family: "Poppins", sans-serif;
   display: flex;
-  min-height: 100vh;
   justify-content: center;
 }
 
 svg, a {
   color: inherit;
   fill: currentColor;
+}
+
+h2, h3 {
+  margin-top: 2em;
+  margin-bottom: .5em;
 }
 
 ul.none {
@@ -44,12 +48,22 @@ ul.none {
 
 pre {
   padding: 1rem;
+  overflow-x: auto;
+}
+
+:not(pre) > code {
+  font-size: 1.3em;
+  color: var(--accentColor);
 }
 
 .token.string,
 .token.keyword,
 .token.property {
     color: var(--accentColor);
+}
+
+.token.comment {
+  color: var(--subtleColor);
 }
 
 .neom-convex, pre {
@@ -65,8 +79,9 @@ pre {
 
 
 .navigation {
-  overflow-y: auto;
-  min-width: 200px;
+  position: sticky;
+  top: 0;
+  align-self: start;
   padding: 1rem;
 }
 
@@ -95,10 +110,10 @@ pre {
 }
 
 .content {
-  --contentWidth: 40em;
   padding: 1rem;
-  flex: 1 1 var(--contentWidth);
-  max-width: var(--contentWidth);
+  max-width: 40em;
+  width: calc(100% - 200px);
+  flex: 1;
 }
 
 .content .savager-logo {
@@ -108,20 +123,4 @@ pre {
 
 .content h1 {
   margin: 0;
-}
-
-section {
-  padding: 1rem;
-}
-
-[data-name]:before {
-  content: attr(data-name);
-  display: block;
-}
-
-.savager-svg {
-  display: inline-flex;
-  fill: currentColor;
-  height: var(--svg--dimension, 1.5em);
-  width: var(--svg--dimension, 1.5em);
 }
