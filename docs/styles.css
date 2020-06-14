@@ -8,6 +8,7 @@
   --accentColor: rgb(250, 148, 40);
   --mainColor: rgb(245, 245, 245);
   --subtleColor: rgb(170, 170, 170);
+  --navigationWidth: 200px;
 }
 
 body {
@@ -83,6 +84,7 @@ pre {
   top: 0;
   align-self: start;
   padding: 1rem;
+  min-width: var(--navigationWidth);
 }
 
 .navigation .savager-logo {
@@ -98,9 +100,11 @@ pre {
   color: var(--subtleColor);
   font-size: .8em;
   font-weight: 500;
+  transition: .218s ease;
 }
 
 .navigation li:hover {
+  --background-offset: .25em;
   color: var(--mainColor);
 }
 
@@ -112,7 +116,7 @@ pre {
 .content {
   padding: 1rem;
   max-width: 40em;
-  width: calc(100% - 200px);
+  width: calc(100% - var(--navigationWidth));
   flex: 1;
 }
 
