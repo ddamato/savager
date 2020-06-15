@@ -13,9 +13,7 @@ export default function (currentSheetId, masterSheetId) {
   }
 
   Array.prototype.slice.call(currentSheet.querySelectorAll('symbol')).forEach((symbol) => {
-    if (!masterSheet.getElementById(symbol.id)) {
-      masterSheet.appendChild(symbol);
-    }
+    !masterSheet.getElementById(symbol.id) && masterSheet.appendChild(symbol)
   });
   currentSheet.remove();
 }
