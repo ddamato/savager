@@ -20,10 +20,7 @@ class InjectionManager {
       if (rootReference) {
         return Promise.resolve('Reference found in root, replacement halted.');
       }
-      const inShadowBoundary = useNode.getRootNode({ composed:true }) !== root;
-      if (inShadowBoundary) {
-        return this._embedInternal(useNode, { id });
-      }
+      return this._embedInternal(useNode, { id });
     }
 
     if (exposure === 'external') {
@@ -35,15 +32,13 @@ class InjectionManager {
 
   _replace(useNode, id) {
     const node = this.get(id);
-    if (node) {
-      const clone = node.cloneNode(true);
-      clone.removeAttribute('id');
-      clone.setAttribute('replaced', '');
-      const svg = useNode.parentNode;
-      svg.hasAttributes() && [...svg.attributes].forEach(({ name, value }) => clone.setAttribute(name, value));
-      svg.replaceWith(clone);
-      return clone;
-    }
+    const clone = node.cloneNode(true);
+    clone.removeAttribute('id');
+    clone.setAttribute('replaced', '');
+    const svg = useNode.parentNode;
+    [...svg.attributes].forEach(({ name, value }) => clone.setAttribute(name, value));
+    svg.replaceWith(clone);
+    return clone;
   }
 
   register(useNode, id, elem) {

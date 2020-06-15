@@ -18,6 +18,11 @@ describe('injectionManager', function () {
     expect(injectionFn).to.be.a('function');
   });
 
+  it('should not create instance without a window', function() {
+    injectionFn();
+    expect(global.window).to.not.exist;
+  });
+
   describe('browser context', function () {
     let jsdom
     before(function() {
@@ -108,6 +113,19 @@ describe('injectionManager', function () {
       }).catch(done);
     });
 
+    it('should read explicit exposure', function (done) {
+      document.body.innerHTML = '<svg><symbol id="balloon"><path></path></symbol></svg>';
+      const div = document.createElement('div');
+      div.attachShadow({ mode: 'open' });
+      div.shadowRoot.innerHTML = '<svg><use href="balloon.svg#balloon" exposure="internal"></use></svg>';
+      const useNode = div.shadowRoot.querySelector('use');
+      document.body.appendChild(div);
+      
+      window['svgInjectionManager'].replace(useNode).then(() => {
+        expect(window['svgInjectionManager'].get('balloon')).to.exist;
+        done();
+      }).catch(done);
+    });
 
     it('should error if reference is not found', function (done) {
       document.body.innerHTML = '<svg><symbol id="birthday"><path></path></symbol></svg>';
