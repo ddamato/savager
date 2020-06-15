@@ -61,7 +61,7 @@ class InjectionManager {
   }
 
   _embedExternal(useNode, { id, url }) {
-    return fetch(url).then((res) => res.text()).then((text) => {
+    return window.fetch(url).then((res) => res.text()).then((text) => {
       const dom = new DOMParser().parseFromString(text, 'image/svg+xml');
       const symbol = dom.querySelector('symbol');
       if (symbol) {
@@ -73,6 +73,9 @@ class InjectionManager {
 
   _parseNode(useNode) {
     const url = useNode.getAttribute('href');
+    if (!url) {
+      return {};
+    }
     const [ filepath, id ] = url.split('#');
     let exposure = useNode.getAttribute('exposure');
     if (!exposure) {
