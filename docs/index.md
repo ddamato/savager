@@ -33,18 +33,18 @@ import Savager from 'savager'; /* The constructor */
 import symbols from './manifest.js'; /* manifest.js, created from the `create-symbols` script */
 ```
 
-The assets created should be the ones hosted externally. Savager will then construct the urls based on the `externalUrl` option provided. It's probably best to set this in the constructor options.
+The assets created should be the ones hosted externally. Savager will then construct the urls based on the `externalPath` option provided. It's probably best to set this in the constructor options.
 
 ```js
 import Savager from 'savager';
 import symbols from './manifest.js';
 
-const SVG_CDN_URL = 'https://assets.cdn.com/path/to/assets';
-const savager = new Savager(symbols, { externalUrl: SVG_CDN_URL });
+const SVG_CDN_PATH = 'https://assets.cdn.com/path/to/assets';
+const savager = new Savager(symbols, { externalPath: SVG_CDN_PATH });
 ```
 
 ## Internal Assets
-If you aren't hosting assets externally, you'll need to include a reference sheet on the page. You can let the `prepareAssets()` method attempt to append it to the `document.body`:
+If you aren't hosting assets externally, you'll need to include a reference sheet on the page. You can let the `prepareAssets()` method attempt to append the sheet to the `document.body`:
 
 ```js
 import Savager from 'savager';
@@ -65,6 +65,29 @@ const html = nunjucks.render('index.njk', { assets, sheet });
 ```
 
 The example above uses [Nunjucks](https://mozilla.github.io/nunjucks/) as a templating engine.
+
+## Contingencies
+Depending on the method you choose, there may be reasons why the SVG doesn't render.
+
+- When using the [Shadow DOM](https://bitsofco.de/what-is-the-shadow-dom/), referencing by `id` only exists within the root document that the element exists in; it cannot pentrate its search to a parent root document.
+- When hosting your assets externally, often it becomes beneficial to host via a [CDN](https://www.cloudflare.com/learning/cdn/what-is-a-cdn/). SVG requests are subject to [CORS](https://www.codecademy.com/articles/what-is-cors). Specifically, attempting to request an SVG resource from a different domain will often be blocked.
+
+Both of these can be resolved using the `attemptInject` option, which will take the referenced asset shape and make a copy to be injected into the node. When preparing the assets, you will also receive a `inject` function which should be executed on the page where the SVGs will appear.
+
+```js
+import Savager from 'savager';
+import symbols from './manifest.js';
+
+const savager = new Savager(symbols, { attemptInject: true });
+const { assets, inject } = savager.prepareAssets('balloon');
+```
+
+If you need the `inject` function in a different context from where you prepare assets, you can export it directly from the package. Be sure that when preparing assets, that `attemptInject` option was set to `true`. Otherwise, executing the function will do nothing.
+
+```js
+import { injectionFn } from 'savager';
+```
+
 
 ## Examples
 
@@ -110,8 +133,20 @@ mySvg.appendChild(assets['bang-triangle']);
 ### Adding class names to the assets
 You can provide a single string or an array of strings.
 ```js
-/* Add the 'exampleClass-svg' class to each svg, automatically append reference sheet */
-const options = { classNames: 'exampleClass-svg', autoAppend: true };
+/* Add the 'example-extraLarge' class to each svg, automatically append reference sheet */
+const options = { classNames: 'example-extraLarge', autoAppend: true };
+const { assets } = savager.prepareAssets('bang-triangle', options);
+
+/* Set the innerHTML of an existing element */
+const mySvg = document.querySelector('.mySvg.classNameExample');
+mySvg.innerHTML = assets['bang-triangle'];
+```
+
+### Referencing external assets
+Provide the path to the assets as an option either in the constructor (re: [External Assets](#external-assets)) or in the `prepareAssets()` method. Using external assets does not need a reference sheet to be added in the page.
+```js
+/* Include the path to the assets */
+const options = { externalPath: 'https://assets.cdn.com/path/to/assets' };
 const { assets } = savager.prepareAssets('bang-triangle', options);
 
 /* Set the innerHTML of an existing element */

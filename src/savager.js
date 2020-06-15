@@ -1,6 +1,6 @@
 import consolidateSheet from './consolidateSheet.js';
 import urljoin from 'url-join';
-import { injectionStyle, injectionAttrs, injectionScript } from './injectionManager.js';
+import { injectionStyle, injectionAttrs, injectionFn } from './injectionManager.js';
 
 export default class Savager {
   constructor(symbols, options) {
@@ -11,7 +11,7 @@ export default class Savager {
 
   prepareAssets(assetNames, options) {
     const { 
-      externalUrl,
+      externalPath,
       attemptInject,
       classNames,
       toSvgElement,
@@ -32,7 +32,7 @@ export default class Savager {
     const resources = {};
 
     if (attemptInject) {
-      resources.inject = injectionScript;
+      resources.inject = injectionFn;
     }
 
     if (classNames) {
@@ -48,10 +48,10 @@ export default class Savager {
       const svgAttrs = Object.assign({ exposure: 'internal' }, primarySvgAttrs);
       let useAttrs = { href: `#${assetName}` };
 
-      if (externalUrl) {
+      if (externalPath) {
         svgAttrs.exposure = 'external';
-        const baseExternalUrl = typeof externalUrl === 'string' ? externalUrl : '';
-        useAttrs.href = urljoin(baseExternalUrl, `${assetName}.svg`, useAttrs.href);
+        const baseexternalPath = typeof externalPath === 'string' ? externalPath : '';
+        useAttrs.href = urljoin(baseexternalPath, `${assetName}.svg`, useAttrs.href);
       }
 
       let style = ''
@@ -75,7 +75,7 @@ export default class Savager {
       return Object.assign(acc, { [name]: renderFn(svgString) });
     }, {});
 
-    if (assetSheet && !externalUrl) {
+    if (assetSheet && !externalPath) {
       const { sheet } = completeAssetSheet(assetSheet, assetSheetOptions);
       resources.sheet =  renderFn(sheet);
       if (autoAppend) {

@@ -66,7 +66,7 @@ const options = {
   autoAppend: false,
   classNames: null,
   consolidate: true,
-  externalUrl: false,
+  externalPath: false,
   toSvgElement: false,
 };
 const { assets, sheet, inject } = savager.prepareAssets(['balloon', 'checkmark'],options);
@@ -76,7 +76,7 @@ The method returns an object with up to 3 keys.
 | Key | Value | Description |
 | --- | ----- | ----------- |
 | `assets` | `object` | A map of all your requested assets, accessed by the asset name. The value will depend on what was set as `toSvgElement`. |
-| `sheet` | `undefined`, `string`, `SVGElement`, or custom output depending on options | This is the reference sheet, it can be provided as a string or as an element (using `toSvgElement`). This will be `undefined` when using the `externalUrl` option. |
+| `sheet` | `undefined`, `string`, `SVGElement`, or custom output depending on options | This is the reference sheet, it can be provided as a string or as an element (using `toSvgElement`). This will be `undefined` when using the `externalPath` option. |
 | `inject` | `undefined`, or `function` | The function to include in your app to listen for `<svg>` elements that fail find a reference. This will only return a function if `attemptInject` is set as `true` in the options. |
 
 #### `savager.storeSymbols(symbols)`;
@@ -109,7 +109,7 @@ One or a list of class names to add to the SVG assets.
 
 When set to `true`, this will attempt to consolidate reference sheets if multiple usages of Savager are used on the page. When set to a `String`, it will be the `id` of the single reference sheet on the page after consolidation. Setting to `false` will not consolidate reference sheets.
 
-#### `externalUrl`
+#### `externalPath`
 **`Boolean` or `String`** `void`
 
 If your assets are hosted externally (eg. CDN), you can provide the path to the assets here. Using this will not return a `sheet` resource when preparing assets.

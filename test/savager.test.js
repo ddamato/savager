@@ -49,7 +49,7 @@ describe('Savager', function () {
 
   it('should use external url', function () {
     const symbol = '<svg><symbol viewBox="0 0 24 24"><path/></symbol></svg>';
-    const savager = new Savager({ balloon: symbol }, { externalUrl: 'path/to/assets' });
+    const savager = new Savager({ balloon: symbol }, { externalPath: 'path/to/assets' });
     const { assets } = savager.prepareAssets('balloon');
     expect(assets.balloon).to.include('href="path/to/assets/balloon.svg#balloon"');
   });

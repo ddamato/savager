@@ -99,7 +99,7 @@ export const injectionAttrs = {
   onanimationstart: injectionString,
   onerror: injectionString,
 }
-export const injectionScript = () => {
+export const injectionFn = () => {
   if (typeof window !== 'undefined') {
     window[WINDOW_FN_REFERENCE] = new InjectionManager();
     return window[WINDOW_FN_REFERENCE];
