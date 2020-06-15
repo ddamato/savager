@@ -68,6 +68,27 @@ describe('Savager', function () {
     expect(toThrow).to.throw();
   });
 
+  it('should not prepare consolidation script if set explicitly', function () {
+    const symbol = '<svg><symbol viewBox="0 0 24 24"><path/></symbol></svg>';
+    const savager = new Savager({ balloon: symbol });
+    const { sheet } = savager.prepareAssets('balloon', { consolidate: false });
+    expect(sheet).to.not.include('currentSheet.remove');
+  });
+
+  it('should update primary sheet id for consolidation', function () {
+    const symbol = '<svg><symbol viewBox="0 0 24 24"><path/></symbol></svg>';
+    const savager = new Savager({ balloon: symbol });
+    const { sheet } = savager.prepareAssets('balloon', { consolidate: 'consolidation-idenitifier' });
+    expect(sheet).to.include('consolidation-idenitifier');
+  });
+
+  it('should still return assets not included in symbols', function () {
+    const symbol = '<svg><symbol viewBox="0 0 24 24"><path/></symbol></svg>';
+    const savager = new Savager({ balloon: symbol });
+    const { assets } = savager.prepareAssets('paperclip');
+    expect(assets.paperclip).to.be.a('string');
+  });
+
   describe('browser context', function() {
     let jsdom
     before(function() {

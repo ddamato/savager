@@ -48,10 +48,9 @@ export default class Savager {
       const svgAttrs = Object.assign({ exposure: 'internal' }, primarySvgAttrs);
       let useAttrs = { href: `#${assetName}` };
 
-      if (externalPath) {
+      if (typeof externalPath === 'string') {
         svgAttrs.exposure = 'external';
-        const baseexternalPath = typeof externalPath === 'string' ? externalPath : '';
-        useAttrs.href = urljoin(baseexternalPath, `${assetName}.svg`, useAttrs.href);
+        useAttrs.href = urljoin(externalPath, `${assetName}.svg`, useAttrs.href);
       }
 
       let style = ''
