@@ -4,6 +4,10 @@ export default function (currentSheetId, masterSheetId) {
     return;
   }
 
+  if (!masterSheetId) {
+    masterSheetId = 'savager-primarysheet';
+  }
+
   let masterSheet = document.getElementById(masterSheetId);
   if (!masterSheet) {
     masterSheet = document.createElementNS('http://www.w3.org/2000/svg', 'svg');

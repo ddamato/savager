@@ -138,8 +138,8 @@ This method is also available as a named export from the package. You can use th
 ```js
 const { createSymbols } = require('savager');
 
-const savagerSymbols = createSymbols('path/to/svg');
-console.log(savagerSymbols); // { balloon: '<svg><symbol>...</symbol></svg>' }
+createSymbols('path/to/svg').then((savagerSymbols) => console.log(savagerSymbols));
+/* { balloon: '<svg><symbol>...</symbol></svg>' } */
 ```
 
 ## CLI

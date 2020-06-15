@@ -1,9 +1,5 @@
 export default async function createSymbols(pathOrObject) {
 
-  if (!pathOrObject) {
-    return {};
-  }
-
   if (typeof pathOrObject === 'string') {
     if (typeof window !== 'undefined' || !require) {
       throw new Error('Can only create symbols using path within node environment.');
@@ -24,10 +20,11 @@ export default async function createSymbols(pathOrObject) {
     } catch (err) {
       throw new Error(err);
     }
-  }
-
-  if (typeof pathOrObject === 'object') {
+  } else if (typeof pathOrObject === 'object') {
     return Object.entries(pathOrObject).reduce((symbols, [name, svg]) => Object.assign(symbols, { [name]: toSymbol(svg, name) }), {});
+  } else {
+    console.log('pathOrObject', pathOrObject);
+    throw new Error('Unknown argument provided. Must be an object or path to files.', pathOrObject);
   }
 
 }
