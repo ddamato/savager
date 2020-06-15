@@ -150,6 +150,6 @@ const options = { externalPath: 'https://assets.cdn.com/path/to/assets' };
 const { assets } = savager.prepareAssets('bang-triangle', options);
 
 /* Set the innerHTML of an existing element */
-const mySvg = document.querySelector('.mySvg.classNameExample');
+const mySvg = document.querySelector('.mySvg.externalPathExample');
 mySvg.innerHTML = assets['bang-triangle'];
 ```
