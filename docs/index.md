@@ -121,11 +121,11 @@ Adding the reference sheet can be easier when running in a browser context.
 ```js
 /* Reference sheet is automatically appended to the document.body */
 const options = { autoAppend: true };
-const { assets } = savager.prepareAssets('bang-triangle', options);
+const { assets } = savager.prepareAssets('bars-horizontal', options);
 
 /* Set the innerHTML of an existing element */
 const mySvg = document.querySelector('.mySvg.autoAppendExample');
-mySvg.innerHTML = assets['bang-triangle'];
+mySvg.innerHTML = assets['bars-horizontal'];
 ```
 
 <div class="mySvg autoAppendExample"></div>
@@ -137,11 +137,11 @@ When using this method, it must be run in a browser context to create the DOM El
 ```js
 /* Create a document fragment for each asset, automatically append reference sheet */
 const options = { toSvgElement: true, autoAppend: true };
-const { assets } = savager.prepareAssets('bang-triangle', options);
+const { assets } = savager.prepareAssets('caret-down', options);
 
 /* Append the svg to an existing element */
 const mySvg = document.querySelector('.mySvg.documentFragmentExample');
-mySvg.appendChild(assets['bang-triangle']);
+mySvg.appendChild(assets['caret-down']);
 ```
 
 <div class="mySvg documentFragmentExample"></div>
@@ -153,11 +153,11 @@ You can provide a single string or an array of strings.
 ```js
 /* Add the 'example-extraLarge' class to each svg, automatically append reference sheet */
 const options = { classNames: 'example-extraLarge', autoAppend: true };
-const { assets } = savager.prepareAssets('bang-triangle', options);
+const { assets } = savager.prepareAssets('clock-reverse', options);
 
 /* Set the innerHTML of an existing element */
 const mySvg = document.querySelector('.mySvg.classNameExample');
-mySvg.innerHTML = assets['bang-triangle'];
+mySvg.innerHTML = assets['clock-reverse'];
 ```
 
 <div class="mySvg classNameExample"></div>
@@ -169,11 +169,11 @@ Provide the path to the assets as an option either in the constructor (re: [Exte
 ```js
 /* Include the path to the assets */
 const options = { externalPath: 'assets' };
-const { assets } = savager.prepareAssets('bang-triangle', options);
+const { assets } = savager.prepareAssets('code-brackets', options);
 
 /* Set the innerHTML of an existing element */
 const mySvg = document.querySelector('.mySvg.externalPathExample');
-mySvg.innerHTML = assets['bang-triangle'];
+mySvg.innerHTML = assets['code-brackets'];
 ```
 
 <div class="mySvg externalPathExample"></div>

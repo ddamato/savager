@@ -24,8 +24,13 @@ body {
   justify-content: center;
 }
 
-svg, a {
-  color: inherit;
+a {
+  color: inherit;  
+}
+
+svg {
+  width: 100%;
+  height: 100%;
   fill: currentColor;
 }
 
@@ -135,6 +140,14 @@ pre {
 
 .content h1 {
   margin: 0;
+}
+
+.mySvg {
+  margin: 1rem;
+  --mySvg-dimension: 2rem;
+  color: var(--accentColor);
+  width: var(--mySvg-dimension);
+  height: var(--mySvg-dimension);
 }
 
 @media (max-width: 600px) {
