@@ -1,7 +1,7 @@
 import savagerSymbols from './assets/manifest.js';
 import Savager from './savager/savager.esm.js';
 
-const savager = new Savager(savagerSymbols);
+const savager = new Savager(savagerSymbols, { consolidate: false });
 
 function setH1Logo() {
   const pageAssets = savager.prepareAssets('savager-logo', { autoAppend: true, classNames: 'savager-logo' });

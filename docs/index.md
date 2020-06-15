@@ -93,7 +93,7 @@ import { injectionFn } from 'savager';
 
 Each one of the examples shows the code after initializing an instance of Savager as well as the output to this page with an SVG.
 
-Reference sheets are automatically consolidated under the `savager-primarysheet` Element using the default `consolidate` option. This consolidates multiple reference sheets found on the page into a single sheet.
+Reference sheets are automatically consolidated under the `savager-primarysheet` Element by default using `consolidate` option. This consolidates multiple reference sheets found on the page into a single sheet. For the purposes of example, this option has been set to `false` so sheets can be inspected within the page. Consolidation is normally an important step to ensure no `id` is duplicated.
 
 ---
 
