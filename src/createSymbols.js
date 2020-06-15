@@ -23,7 +23,6 @@ export default async function createSymbols(pathOrObject) {
   } else if (typeof pathOrObject === 'object') {
     return Object.entries(pathOrObject).reduce((symbols, [name, svg]) => Object.assign(symbols, { [name]: toSymbol(svg, name) }), {});
   } else {
-    console.log('pathOrObject', pathOrObject);
     throw new Error('Unknown argument provided. Must be an object or path to files.', pathOrObject);
   }
 

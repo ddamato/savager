@@ -21,6 +21,21 @@ describe('createSymbols', function () {
     });
   });
 
+  it('should process a given object as svg strings', function (done) {
+    const x = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path/></svg>';
+    createSymbols({ x }).then((symbols) => {
+      expect(symbols.x).to.be.a('string');
+      done();
+    }).catch(done);
+  });
+
+  it('should throw if incorrect parameter is provided', function (done) {
+    createSymbols(42).then(done).catch((err) => {
+      expect(err).to.exist;
+      done();
+    })
+  });
+
   describe('browser context', function() {
     let jsdom
     before(function() {
@@ -40,21 +55,6 @@ describe('createSymbols', function () {
         expect(err).to.exist;
         done();
       }).catch(done);
-    });
-
-    it('should process a given object as svg strings', function (done) {
-      const x = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path/></svg>';
-      createSymbols({ x }).then((symbols) => {
-        expect(symbols.x).to.be.a('string');
-        done();
-      }).catch(done);
-    });
-
-    it('should throw if incorrect parameter is provided', function (done) {
-      createSymbols(42).then(done).catch((err) => {
-        expect(err).to.exist;
-        done();
-      })
     });
   });
 });
