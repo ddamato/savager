@@ -120,6 +120,14 @@ If your assets are hosted externally (eg. CDN), you can provide the path to the 
 When providing a function, the input will be SVG asset string which may transform into an element for the needs of your app. When providing `true`, it wil use a default render function to return valid `SVGElement` nodes.
 
 ---
+### `injectionFn`
+This is an additional export that is provided to help when injection is required but assets are prepared on the server. It is the same function provided when using the `attemptInject` option. You can individually require the injection function independent of using an instance using this technique.
+
+```js
+const { injectionFn } = require('savager');
+```
+
+---
 
 ### `createSymbols(pathOrObject)`
 
