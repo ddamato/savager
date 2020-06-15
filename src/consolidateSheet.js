@@ -12,6 +12,10 @@ export default function (currentSheetId, masterSheetId) {
     document.body.appendChild(masterSheet);
   }
 
-  Array.prototype.slice.call(currentSheet.querySelectorAll('symbol')).forEach((symbol) => masterSheet.appendChild(symbol));
+  Array.prototype.slice.call(currentSheet.querySelectorAll('symbol')).forEach((symbol) => {
+    if (!masterSheet.getElementById(symbol.id)) {
+      masterSheet.appendChild(symbol);
+    }
+  });
   currentSheet.remove();
 }

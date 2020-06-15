@@ -91,6 +91,12 @@ import { injectionFn } from 'savager';
 
 ## Examples
 
+Each one of the examples shows the code after initializing an instance of Savager as well as the output to this page with an SVG.
+
+Reference sheets are automatically consolidated under the `savager-primarysheet` Element using the default `consolidate` option. This consolidates multiple reference sheets found on the page into a single sheet.
+
+---
+
 ### Assets as innerHTML
 Creating these assets will return strings. You can export the strings to a render function for templating or just write them as HTML. Remember to add the sheet to the page if the assets are not hosted.
 ```js
@@ -106,17 +112,25 @@ const mySvg = document.querySelector('.mySvg.innerHtmlExample');
 mySvg.innerHTML = assets['bang-triangle'];
 ```
 
+<div class="mySvg innerHtmlExample"></div>
+
+---
+
 ### Auto appending the sheet
 Adding the reference sheet can be easier when running in a browser context.
 ```js
 /* Reference sheet is automatically appended to the document.body */
 const options = { autoAppend: true };
-const { assets } = savager.prepareAssets('bang-triangle');
+const { assets } = savager.prepareAssets('bang-triangle', options);
 
 /* Set the innerHTML of an existing element */
 const mySvg = document.querySelector('.mySvg.autoAppendExample');
 mySvg.innerHTML = assets['bang-triangle'];
 ```
+
+<div class="mySvg autoAppendExample"></div>
+
+---
 
 ### Assets as document fragment
 When using this method, it must be run in a browser context to create the DOM Element. Running this server-side will throw an error.
@@ -130,6 +144,10 @@ const mySvg = document.querySelector('.mySvg.documentFragmentExample');
 mySvg.appendChild(assets['bang-triangle']);
 ```
 
+<div class="mySvg documentFragmentExample"></div>
+
+---
+
 ### Adding class names to the assets
 You can provide a single string or an array of strings.
 ```js
@@ -142,14 +160,20 @@ const mySvg = document.querySelector('.mySvg.classNameExample');
 mySvg.innerHTML = assets['bang-triangle'];
 ```
 
+<div class="mySvg classNameExample"></div>
+
+---
+
 ### Referencing external assets
 Provide the path to the assets as an option either in the constructor (re: [External Assets](#external-assets)) or in the `prepareAssets()` method. Using external assets does not need a reference sheet to be added in the page.
 ```js
 /* Include the path to the assets */
-const options = { externalPath: 'https://assets.cdn.com/path/to/assets' };
+const options = { externalPath: 'assets' };
 const { assets } = savager.prepareAssets('bang-triangle', options);
 
 /* Set the innerHTML of an existing element */
 const mySvg = document.querySelector('.mySvg.externalPathExample');
 mySvg.innerHTML = assets['bang-triangle'];
 ```
+
+<div class="mySvg externalPathExample"></div>
