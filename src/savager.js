@@ -17,7 +17,7 @@ export default class Savager {
       toSvgElement,
       consolidate,
       autoAppend,
-    } = options || this._options;
+    } = Object.assign((options || {}), this._options);
     const primarySvgAttrs = { xmlns: 'http://www.w3.org/2000/svg' };
     const assetSheetOptions = {
       prepareConsolidation: typeof consolidate === 'undefined' || Boolean(consolidate),
