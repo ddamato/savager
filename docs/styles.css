@@ -99,22 +99,26 @@ pre {
 }
 
 .navigation li {
-  padding: .5rem 1rem;
   margin-bottom: 1rem;
+}
+
+.navigation a {
+  display: block;
+  text-decoration: none;
+  padding: .5rem 1rem;
   color: var(--subtleColor);
   font-size: .8em;
   font-weight: 500;
   transition: .218s ease;
 }
 
-.navigation li:hover {
+.navigation a:hover {
   --background-offset: .25em;
   color: var(--mainColor);
 }
 
-.navigation a {
-  display: block;
-  text-decoration: none;
+.navigation a:active {
+  --background-offset: 0;
 }
 
 .content {
@@ -131,4 +135,14 @@ pre {
 
 .content h1 {
   margin: 0;
+}
+
+@media (max-width: 600px) {
+  .navigation {
+    display: none;
+  }
+
+  .content {
+    width: 100%;
+  }
 }
