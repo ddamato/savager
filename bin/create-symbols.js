@@ -38,7 +38,7 @@ async function writeSymbolReferenceFile(symbols, { outputDir, type }) {
       refString = `export default ${json}`;
       break;
     case 'cjs':
-      refString = `modules.export = ${json}`;
+      refString = `module.exports = ${json}`;
       break;
     default:
       refString = json;
