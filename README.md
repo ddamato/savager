@@ -44,7 +44,7 @@ The default export of the package, also available as a named export where needed
 ```js
 // CommonJS, require syntax
 const Savager = require('savager');
-const symbols = require('./path/to/svgs.js');
+const symbols = require('./path/to/manifest.js');
 
 const savager = new Savager(symbols, options);
 ```
@@ -52,7 +52,7 @@ const savager = new Savager(symbols, options);
 ```js
 // ES6 Modules, import syntax
 import Savager from 'savager';
-import symbols from './path/to/svgs.js';
+import symbols from './path/to/manifest.js';
 
 const savager = new Savager(symbols);
 ```
@@ -64,7 +64,7 @@ This is the primary method you'll be invoking, it will return all the assets you
 
 ```js
 import Savager from 'savager';
-import symbols from './path/to/svgs.js';
+import symbols from './path/to/manifest.js';
 
 const savager = new Savager(symbols);
 const options = {
@@ -180,4 +180,4 @@ The `create-symbols` script targets a directory of `.svg` assets and prepares th
 create-symbols -i svg -o app/static/assets -t esm
 ```
 
-The above will create new `.svg` assets in the `app/static/assets` directory along with a `symbols.js` file, written with ES Module syntax. You can move the `symbols.js` file elsewhere in the app depending on how you intend to use the project as it is needed to initialize a `new Savager()` instance.
+The above will create new `.svg` assets in the `app/static/assets` directory along with a `manifest.js` file, written with ES Module syntax. You can move the `manifest.js` file elsewhere in the app depending on how you intend to use the project as it is needed to initialize a `new Savager()` instance.
