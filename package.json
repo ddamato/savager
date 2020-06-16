@@ -9,12 +9,12 @@
   "scripts": {
     "build": "rollup -c",
     "copy:dist": "cp -r ./dist/*.js ./docs/savager",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
+    "coverage": "nyc report --reporter=lcov",
+    "coveralls": "cat ./coverage/lcov.info | node_modules/.bin/coveralls",
     "build:docs": "npm run build && npm run copy:dist && node ./bin/build-docs.js",
     "prepare": "npm run build",
     "prepare:assets": "node ./bin/create-symbols.js -i docs/svg -o docs/assets -t esm",
-    "test": "nyc --reporter=html --reporter=text _mocha test/**/*.test.js -r esm",
+    "test": "nyc mocha test/**/*.test.js -r esm",
     "version": "auto-changelog -p && git add CHANGELOG.md"
   },
   "bin": {
