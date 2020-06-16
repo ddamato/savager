@@ -1,4 +1,6 @@
-# [savager](https://ddamato.github.io/savager/)
+<a href="https://ddamato.github.io/savager">
+  <img width="200" src="savager-logo.svg">
+</a>
 
 [![npm version](https://img.shields.io/npm/v/savager.svg)](https://www.npmjs.com/package/savager)
 [![Build Status](https://travis-ci.org/ddamato/savager.svg?branch=master)](https://travis-ci.org/ddamato/savager)
