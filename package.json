@@ -25,13 +25,20 @@
     "type": "git",
     "url": "git+https://github.com/ddamato/savager.git"
   },
-  "keywords": [],
+  "keywords": [
+    "svg",
+    "manager",
+    "icons",
+    "xml",
+    "javascript",
+    "symbol"
+  ],
   "author": "Donnie D'Amato <fauxserious@gmail.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/ddamato/savager/issues"
   },
-  "homepage": "https://github.com/ddamato/savager#readme",
+  "homepage": "https://ddamato.github.io/savager",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^13.0.0",
     "@rollup/plugin-node-resolve": "^8.0.1",
