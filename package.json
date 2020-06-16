@@ -9,7 +9,7 @@
   "scripts": {
     "build": "rollup -c",
     "copy:dist": "cp -r ./dist/*.js ./docs/savager",
-    "coverage": "nyc report --reporter=lcov",
+    "coverage": "npm run test && nyc report --reporter=lcov",
     "coveralls": "cat ./coverage/lcov.info | node_modules/.bin/coveralls",
     "build:docs": "npm run build && npm run copy:dist && node ./bin/build-docs.js",
     "prepare": "npm run build",
