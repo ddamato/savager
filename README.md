@@ -1,5 +1,9 @@
 # [savager](https://ddamato.github.io/savager/)
 
+[![npm version](https://img.shields.io/npm/v/savager.svg)](https://www.npmjs.com/package/savager)
+[![Build Status](https://travis-ci.org/ddamato/savager.svg?branch=master)](https://travis-ci.org/ddamato/savager)
+[![Coverage Status](https://coveralls.io/repos/github/ddamato/savager/badge.svg?branch=master)](https://coveralls.io/github/ddamato/savager?branch=master)
+
 Managing SVG files in a project can be a pain. Savager tries to soothe the pain.
 
 ## Features
