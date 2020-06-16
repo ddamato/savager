@@ -3,6 +3,8 @@ import { expect } from 'chai';
 
 import { injectionStyle, injectionAttrs, injectionFn } from '../src/injectionManager.js';
 
+jsdomGlobal()();
+
 describe('injectionManager', function () {
   it('should export style', function () {
     expect(injectionStyle).to.equal('<style>@keyframes nodeDetected { to { opacity: 1; } }</style>');
