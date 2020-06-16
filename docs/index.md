@@ -88,6 +88,34 @@ If you need the `inject` function in a different context from where you prepare 
 import { injectionFn } from 'savager';
 ```
 
+## Organization
+One method of organizing is to create a `savager.config.js` which you may maintain as your source of truth for SVG assets.
+
+```js
+// savager.config.js
+import Savager from 'savager';
+import symbols from './manifest.js';
+
+export default new Savager(symbols);
+```
+
+Then you can prepare assets as needed.
+
+```js
+import { prepareAssets } from './savager.config.js';
+
+const { assets, sheet } = prepareAssets('balloon');
+```
+
+You may also apply the reference sheet earlier and use the `getAssets` export from the package to render your assets. This function is independent from the `symbols` entered into a `Savager` instance; it just assumes these assets are included in the correct location given the options you provide.
+
+```js
+// Assume the reference sheet is on the page
+import { getAssets } from 'savager';
+
+const { assets } = getAssets('balloon');
+```
+Options related to reference sheet management (`consolidate`, `autoAppend`) do not affect these assets.
 
 ## Examples
 

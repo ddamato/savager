@@ -129,6 +129,24 @@ const { injectionFn } = require('savager');
 
 ---
 
+### `getAssets(assetNames, options)`
+
+This is a slimmer version of the `prepareAssets()` method on the `Savager` instance. It can be helpful when you've prepared your reference sheet in one part of the app lifecycle but need to generate the assets at another time without needing to import the `symbols` and instanciate another instance.
+
+This function will not provide a reference sheet, only the `assets` and `inject` (if requested).
+
+The `consolidate` and `autoAppend` options do nothing here as there is no reference sheet to work with.
+
+```js
+const { getAssets } = require('savager');
+
+const { assets } = getAssets(['balloon', 'paperclip'], { externalPath: 'path/to/assets' });
+console.log(assets.balloon); // <svg><use href="path/to/assets/balloon.svg#balloon"></svg>
+console.log(assets.paperclip); // <svg><use href="path/to/assets/paperclip.svg#paperclip"></svg>
+```
+
+---
+
 ### `createSymbols(pathOrObject)`
 
 This method takes a single argument, either a path to SVG files or an object where the keys are asset names (used for look up) and the value is a SVG XML string (`<svg></svg>`). When using the directory path, the file name will become the asset name.
