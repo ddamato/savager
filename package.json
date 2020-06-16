@@ -14,7 +14,7 @@
     "build:docs": "npm run build && npm run copy:dist && node ./bin/build-docs.js",
     "prepare": "npm run build",
     "prepare:assets": "node ./bin/create-symbols.js -i docs/svg -o docs/assets -t esm",
-    "test": "nyc --reporter=html --reporter=text mocha test/**/*.test.js -r esm",
+    "test": "nyc --reporter=html --reporter=text _mocha test/**/*.test.js -r esm",
     "version": "auto-changelog -p && git add CHANGELOG.md"
   },
   "bin": {
