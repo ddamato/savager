@@ -9,10 +9,12 @@
   "scripts": {
     "build": "rollup -c",
     "copy:dist": "cp -r ./dist/*.js ./docs/savager",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
     "build:docs": "npm run build && npm run copy:dist && node ./bin/build-docs.js",
     "prepare": "npm run build",
     "prepare:assets": "node ./bin/create-symbols.js -i docs/svg -o docs/assets -t esm",
-    "test": "nyc mocha test/**/*.test.js -r esm",
+    "test": "nyc --reporter=html --reporter=text mocha test/**/*.test.js -r esm",
     "version": "auto-changelog -p && git add CHANGELOG.md"
   },
   "bin": {
@@ -45,6 +47,7 @@
     "auto-changelog": "^2.0.0",
     "chai": "^4.2.0",
     "cheerio": "^1.0.0-rc.3",
+    "coveralls": "^3.1.0",
     "esm": "^3.2.25",
     "fs-extra": "^9.0.1",
     "html-minifier": "^4.0.0",
