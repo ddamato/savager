@@ -1,6 +1,6 @@
+import getAssets from './getAssets.js';
 import consolidateSheet from './consolidateSheet.js';
-import urljoin from 'url-join';
-import { injectionStyle, injectionAttrs, injectionFn } from './injectionManager.js';
+import toSvgElementFn from './toSvgElement.js';
 
 export default class Savager {
   constructor(symbols, options) {
@@ -11,14 +11,18 @@ export default class Savager {
 
   prepareAssets(assetNames, options) {
     const { 
-      externalPath,
-      attemptInject,
-      classNames,
-      toSvgElement,
       consolidate,
       autoAppend,
+      ...getAssetsOptions
     } = Object.assign((options || {}), this._options);
-    const primarySvgAttrs = { xmlns: 'http://www.w3.org/2000/svg' };
+
+    let renderFn = (svgString) => svgString;
+    if (getAssetsOptions.toSvgElement) {
+      renderFn = typeof getAssetsOptions.toSvgElement === 'function' ? getAssetsOptions.toSvgElement : toSvgElementFn;
+    }
+
+    const resources = getAssets(assetNames, getAssetsOptions);
+
     const assetSheetOptions = {
       prepareConsolidation: typeof consolidate === 'undefined' || Boolean(consolidate),
     }
@@ -29,52 +33,14 @@ export default class Savager {
         : 'savager-primarysheet';
     }
 
-    const resources = {};
-
-    if (attemptInject) {
-      resources.inject = injectionFn;
-    }
-
-    if (classNames) {
-      primarySvgAttrs.class = [].concat(classNames).filter(Boolean).join(' ');
-    }
-
-    let renderFn = (svgString) => svgString;
-    if (toSvgElement) {
-      renderFn = typeof toSvgElement === 'function' ? toSvgElement : toSvgElementFn;
-    }
-
-    const svgAssets = [].concat(assetNames).reduce(function collectAssets(assets, assetName) {
-      const svgAttrs = Object.assign({ exposure: 'internal' }, primarySvgAttrs);
-      let useAttrs = { href: `#${assetName}` };
-
-      if (typeof externalPath === 'string') {
-        svgAttrs.exposure = 'external';
-        useAttrs.href = urljoin(externalPath, `${assetName}.svg`, useAttrs.href);
-      }
-
-      let style = ''
-      if (attemptInject) {
-        style = injectionStyle;
-        useAttrs = Object.assign(useAttrs, injectionAttrs);
-      }
-
-      const svgString = `<svg ${toAttributes(svgAttrs)}>${style}<use ${toAttributes(useAttrs)}/></svg>`;
-      return Object.assign(assets, { [assetName]: svgString });
-    }, {});
-
     const symbols = this._symbols;
-    let assetSheet = Object.keys(svgAssets).reduce(function unwrapSvg(sheet, assetName) {
+    let assetSheet = Object.keys(resources.assets).reduce(function unwrapSvg(sheet, assetName) {
       return symbols && symbols[assetName]
         ? sheet + symbols[assetName].replace(/<\/?svg ?[^>]*>/gmi, '')
         : sheet
     }, '');
 
-    resources.assets = Object.entries(svgAssets).reduce(function renderAssets(acc, [name, svgString]) {
-      return Object.assign(acc, { [name]: renderFn(svgString) });
-    }, {});
-
-    if (assetSheet && !externalPath) {
+    if (assetSheet && !getAssetsOptions.externalPath) {
       const { sheet } = completeAssetSheet(assetSheet, assetSheetOptions);
       resources.sheet =  renderFn(sheet);
       if (autoAppend) {
@@ -102,24 +68,6 @@ function completeAssetSheet(symbols, options) {
   }
   const sheet = `<svg ${attrs}>${script}${symbols}</svg>`;
   return { sheet };
-}
-
-function toAttributes(obj) {
-  return Object.entries(obj).map(([ name, value ]) => `${name}="${value}"`).join(' ');
-}
-
-let elem;
-function toSvgElementFn(svgString) {
-  if (typeof document !== 'undefined' && document.createElement) {
-    if (!elem) {
-      elem = document.createElement('div');
-    }
-    elem.innerHTML = svgString;
-    const frag = document.createDocumentFragment();
-    [...elem.children].forEach((child) => frag.appendChild(child));
-    return frag;
-  }
-  return svgString;
 }
 
 function appendSheet(sheet) {

@@ -14,6 +14,12 @@ describe('Savager', function () {
     expect(savager).to.be.instanceOf(Savager);
   });
 
+  it('should return default assets with no options', function () {
+    const savager = new Savager();
+    const { assets } = savager.prepareAssets('balloon');
+    expect(assets.balloon).to.be.a('string');
+  });
+
   it('should return stored assets', function () {
     const symbol = '<svg><symbol viewBox="0 0 24 24"><path/></symbol></svg>';
     const savager = new Savager({ balloon: symbol });
