@@ -1,6 +1,6 @@
 {
   "name": "savager",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "SVG Manager Solution",
   "main": "dist/savager.umd.js",
   "module": "dist/savager.esm.js",
