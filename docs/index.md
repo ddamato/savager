@@ -85,7 +85,7 @@ const { assets, inject } = savager.prepareAssets('balloon');
 If you need the `inject` function in a different context from where you prepare assets, you can export it directly from the package. Be sure that when preparing assets, that `attemptInject` option was set to `true`. Otherwise, executing the function will do nothing.
 
 ```js
-import { injectionFn } from 'savager';
+import { injectionInit } from 'savager';
 ```
 
 ## Organization

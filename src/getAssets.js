@@ -1,6 +1,7 @@
 import urljoin from 'url-join';
 import toSvgElementFn from './toSvgElement.js';
-import { injectionStyle, injectionAttrs, injectionFn } from './injectionManager.js';
+import { injectionStyle, injectionAttrs } from './injectionAssets.js';
+import injectionInit from './injectionManager.js';
 
 function getAssets(assetNames, options) {
   const { 
@@ -14,7 +15,7 @@ function getAssets(assetNames, options) {
   const resources = {};
 
   if (attemptInject) {
-    resources.inject = injectionFn;
+    resources.inject = injectionInit;
   }
 
   if (classNames) {

@@ -7,7 +7,8 @@
   "browser": "dist/savager.umd.js",
   "unpkg": "dist/savager.umd.js",
   "scripts": {
-    "build": "rollup -c",
+    "build": "npm run bundle:injection && rollup -c",
+    "bundle:injection": "node ./bin/bundle-injection.js",
     "copy:dist": "cp -r ./dist/*.js ./docs/savager",
     "coverage": "npm run test && nyc report --reporter=lcov",
     "coveralls": "cat ./coverage/lcov.info | node_modules/.bin/coveralls",

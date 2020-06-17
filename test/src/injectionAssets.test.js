@@ -1,7 +1,8 @@
 import jsdomGlobal from 'jsdom-global';
 import { expect } from 'chai';
 
-import { injectionStyle, injectionAttrs, injectionFn } from '../../src/injectionManager.js';
+import { injectionStyle, injectionAttrs } from '../../src/injectionAssets.js';
+import injectionInit from '../../src/injectionManager.js';
 
 jsdomGlobal()();
 
@@ -17,11 +18,11 @@ describe('injectionManager', function () {
   });
 
   it('should be a function', function () {
-    expect(injectionFn).to.be.a('function');
+    expect(injectionInit).to.be.a('function');
   });
 
   it('should not create instance without a window', function() {
-    injectionFn();
+    injectionInit();
     expect(global.window).to.not.exist;
   });
 
@@ -30,7 +31,7 @@ describe('injectionManager', function () {
     before(function() {
       jsdom = jsdomGlobal();
       global.DOMParser = window.DOMParser;
-      injectionFn();
+      injectionInit();
     });
 
     beforeEach(function() {
