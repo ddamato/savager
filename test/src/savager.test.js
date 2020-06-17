@@ -1,7 +1,7 @@
 import jsdomGlobal from 'jsdom-global';
 import { expect } from 'chai';
 
-import Savager from '../src/savager.js';
+import Savager from '../../src/savager.js';
 
 jsdomGlobal()();
 

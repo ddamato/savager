@@ -11,6 +11,7 @@ const args = minimist(process.argv.slice(2), {
 });
 
 createSymbols(args.input).then(async (symbols) => {
+  console.log(`processing: ${args.input}`);
   if (!symbols || !Object.keys(symbols).length) {
     throw new Error(`No svg files found in input directory "${args.input}"`);
   }

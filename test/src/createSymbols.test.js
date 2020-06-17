@@ -2,7 +2,7 @@ import path from 'path';
 import jsdomGlobal from 'jsdom-global';
 import { expect } from 'chai';
 
-import createSymbols from '../src/createSymbols.js';
+import createSymbols from '../../src/createSymbols.js';
 
 jsdomGlobal()();
 

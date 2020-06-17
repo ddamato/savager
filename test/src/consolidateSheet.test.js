@@ -1,7 +1,7 @@
 import jsdomGlobal from 'jsdom-global';
 import { expect } from 'chai';
 
-import consolidateSheet from '../src/consolidateSheet.js';
+import consolidateSheet from '../../src/consolidateSheet.js';
 
 jsdomGlobal()();
 

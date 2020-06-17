@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import getAssets from '../src/getAssets.js';
+import getAssets from '../../src/getAssets.js';
 
 describe('getAssets', function () {
   it('should be a function', function () {

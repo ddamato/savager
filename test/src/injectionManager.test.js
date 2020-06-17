@@ -1,7 +1,7 @@
 import jsdomGlobal from 'jsdom-global';
 import { expect } from 'chai';
 
-import { injectionStyle, injectionAttrs, injectionFn } from '../src/injectionManager.js';
+import { injectionStyle, injectionAttrs, injectionFn } from '../../src/injectionManager.js';
 
 jsdomGlobal()();
 
