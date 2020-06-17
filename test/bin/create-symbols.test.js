@@ -29,6 +29,15 @@ describe('create-symbols.js', async function () {
     expect(data.x).to.be.a('string');
   });
 
+  it('should create json file when requested', async function () {
+    await execPromise(`${createSymbolsProcess} -i test/bin/fixtures -o test/bin/output -t json`);
+    const jsonPath = path.join(outputPath, 'manifest.json');
+    const exists = await fs.pathExists(jsonPath);
+    const data = await fs.readJson(jsonPath);
+    expect(exists).to.be.true;
+    expect(data.x).to.be.a('string');
+  });
+
   it('should create a cjs file when requested', async function () {
     await execPromise(`${createSymbolsProcess} -i test/bin/fixtures -o test/bin/output -t cjs`);
     const cjsPath = path.join(outputPath, 'manifest.js');

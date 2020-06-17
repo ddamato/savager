@@ -2,7 +2,8 @@
 const path = require('path');
 const fs = require('fs-extra');
 const minimist = require('minimist');
-const { createSymbols } = require('../dist/savager.umd.js');
+const esmImport = require('esm')(module);
+const createSymbols = esmImport('../src/createSymbols.js').default;
 
 const args = minimist(process.argv.slice(2), {
   string: ['input', 'output', 'type'],

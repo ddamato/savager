@@ -15,9 +15,9 @@
     "prepare": "npm run build",
     "prepare:assets": "node ./bin/create-symbols.js -i docs/svg -o docs/assets -t esm",
     "test": "npm run test:src",
+    "test:all":"npm run test:src && npm run test:dist && npm run test:bin",
     "test:src": "nyc mocha test/src/*.test.js -r esm",
-    "test:esm": "nyc mocha test/dist/esm.test.js -r esm",
-    "test:umd": "nyc mocha test/dist/umd.test.js",
+    "test:dist": "nyc mocha test/dist/*.test.js",
     "test:bin": "nyc mocha test/bin/*.test.js",
     "version": "auto-changelog -p && git add CHANGELOG.md"
   },
