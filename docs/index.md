@@ -88,6 +88,14 @@ If you need the `inject` function in a different context from where you prepare 
 import { injectionInit } from 'savager';
 ```
 
+You can also make this into an [IIFE](https://medium.com/javascript-in-plain-english/https-medium-com-javascript-in-plain-english-stop-feeling-iffy-about-using-an-iife-7b0292aba174) by stringifying the function to be put on the page. This might be helpful for use in templating frameworks.
+
+```js
+import { injectionInit } from 'savager';
+
+const iife = `(${injectionInit.toString()})()`;
+```
+
 ## Organization
 One method of organizing is to create a `savager.config.js` which you may maintain as your source of truth for SVG assets.
 
