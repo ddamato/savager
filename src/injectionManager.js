@@ -43,9 +43,7 @@ export default function () {
       clone.removeAttribute("id");
       clone.setAttribute("replaced", "");
       const svg = useNode.parentNode;
-      [...svg.attributes].forEach(({ name, value }) =>
-        clone.setAttribute(name, value)
-      );
+      [...svg.attributes].forEach(({ name, value }) => clone.setAttribute(name, value));
       svg.replaceWith(clone);
       return clone;
     }
@@ -101,9 +99,7 @@ export default function () {
       symbol.children &&
         [...symbol.children].forEach((child) => svg.appendChild(child));
       symbol.hasAttributes() &&
-        [...symbol.attributes].forEach(({ name, value }) =>
-          svg.setAttribute(name, value)
-        );
+        [...symbol.attributes].forEach(({ name, value }) =>svg.setAttribute(name, value));
       return svg;
     }
   }
