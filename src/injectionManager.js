@@ -38,14 +38,23 @@ export default function () {
     }
 
     _replace(useNode, id) {
-      const node = this.get(id);
-      const clone = node.cloneNode(true);
-      clone.removeAttribute("id");
-      clone.setAttribute("replaced", "");
+      const clone = this.get(id).cloneNode(true);
       const svg = useNode.parentNode;
-      [...svg.attributes].forEach(({ name, value }) => clone.setAttribute(name, value));
-      svg.replaceWith(clone);
-      return clone;
+      svg.setAttribute('replace', '');
+      svg.removeAttribute('onerror');
+      svg.removeAttribute('onanimationstart');
+      this._safeClone(clone, svg);
+      useNode.remove();
+      return svg;
+    }
+
+    _safeClone(clonedRef, host) {
+      [...clonedRef.attributes].forEach(({ name, value }) => {
+        !host.hasAttribute(name) && host.setAttribute(name, value);
+      });
+      [...clonedRef.children].forEach((child) => {
+        !host.querySelector(child.tagName) && host.appendChild(child);
+      });
     }
 
     register(useNode, id, elem) {

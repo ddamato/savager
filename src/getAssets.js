@@ -47,7 +47,7 @@ function getAssets(assetConfigs, options) {
 
     let desc = '';
     if (assetTitle && assetDesc) {
-      desc = `<desc>${assetTitle}</desc>`;
+      desc = `<desc>${assetDesc}</desc>`;
     }
 
     let style = ''
