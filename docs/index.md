@@ -66,6 +66,25 @@ const html = nunjucks.render('index.njk', { assets, sheet });
 
 The example above uses [Nunjucks](https://mozilla.github.io/nunjucks/) as a templating engine.
 
+## Accessibility
+When working with SVGs, you'll often need to add additional attributes and children to the asset. The `assetNames` parameter can also take an object of the following shape to help populate the asset with accessibility features.
+
+```js
+const assetNames = {
+  name: 'balloon',
+  title: 'My balloon', // Creates a <title> element in the svg
+  desc: 'It is large and round.', // Creates a <desc> element in the svg
+  attributes: {
+    role: 'img', // Add additional attributes, ARIA can also go here
+  }
+}
+const savager = new Savager(symbols);
+const { assets } = savager.prepareAssets(assetNames);
+document.body.innerHTML = assets.balloon; // Now includes accessibility features
+```
+
+This also allows for an array of these objects. When providing a `desc`, you must also provide a `title`.
+
 ## Contingencies
 Depending on the method you choose, there may be reasons why the SVG doesn't render.
 
@@ -95,6 +114,8 @@ import { injectionInit } from 'savager';
 
 const iife = `(${injectionInit.toString()})()`;
 ```
+
+When the injection occurs, some of the nodes within the original asset may be removed. The script takes care in not removing the original host asset so you may keep a reference in the application lifecycle. Some attributes used in order to activate the script may be removed. Style attributes used to activate the script will remain but should not affect the presentation of your SVG. 
 
 ## Organization
 One method of organizing is to create a `savager.config.js` which you may maintain as your source of truth for SVG assets.

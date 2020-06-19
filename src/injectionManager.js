@@ -43,12 +43,12 @@ export default function () {
       svg.setAttribute('replace', '');
       svg.removeAttribute('onerror');
       svg.removeAttribute('onanimationstart');
-      this._safeClone(clone, svg);
+      this._assignClone(clone, svg);
       useNode.remove();
       return svg;
     }
 
-    _safeClone(clonedRef, host) {
+    _assignClone(clonedRef, host) {
       [...clonedRef.attributes].forEach(({ name, value }) => {
         !host.hasAttribute(name) && host.setAttribute(name, value);
       });
