@@ -3,7 +3,7 @@ import toSvgElementFn from './toSvgElement.js';
 import { injectionStyle, injectionAttrs } from './injectionAssets.js';
 import injectionInit from './injectionManager.js';
 
-function getAssets(assetNames, options) {
+function getAssets(assetConfigs, options) {
   const { 
     externalPath,
     attemptInject,
@@ -27,13 +27,27 @@ function getAssets(assetNames, options) {
     renderFn = typeof toSvgElement === 'function' ? toSvgElement : toSvgElementFn;
   }
 
-  const svgAssets = [].concat(assetNames).reduce(function collectAssets(assets, assetName) {
-    const svgAttrs = Object.assign({ exposure: 'internal' }, primarySvgAttrs);
+  const svgAssets = [].concat(assetConfigs).reduce(function collectAssets(assets, assetConfig) {
+    const assetName = assetConfig.name || assetConfig;
+    const assetAttrs = assetConfig.attributes || {};
+    const assetTitle = assetConfig.title || '';
+    const assetDesc = assetConfig.desc || '';
+    const svgAttrs = Object.assign(assetAttrs, { exposure: 'internal' }, primarySvgAttrs);
     let useAttrs = { href: `#${assetName}` };
 
     if (typeof externalPath === 'string') {
       svgAttrs.exposure = 'external';
       useAttrs.href = urljoin(externalPath, `${assetName}.svg`, useAttrs.href);
+    }
+
+    let title = '';
+    if (assetTitle) {
+      title = `<title>${assetTitle}</title>`;
+    }
+
+    let desc = '';
+    if (assetTitle && assetDesc) {
+      desc = `<desc>${assetTitle}</desc>`;
     }
 
     let style = ''
@@ -42,7 +56,7 @@ function getAssets(assetNames, options) {
       useAttrs = Object.assign(useAttrs, injectionAttrs);
     }
 
-    const svgString = `<svg ${toAttributes(svgAttrs)}>${style}<use ${toAttributes(useAttrs)}/></svg>`;
+    const svgString = `<svg ${toAttributes(svgAttrs)}>${title}${desc}${style}<use ${toAttributes(useAttrs)}/></svg>`;
     return Object.assign(assets, { [assetName]: svgString });
   }, {});
 
