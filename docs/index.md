@@ -25,6 +25,8 @@ const { assets, sheet } = savager.prepareAssets('balloon');
 document.body.innerHTML = assets.balloon;
 ```
 
+More information about the API can be found on [github](https://github.com/ddamato/savager).
+
 ## External Assets
 When hosting assets externally, they should still be processed first by the `create-symbols` script. The script will create a manifest which the `Savager` instance uses to prepare assets.
 
@@ -88,7 +90,7 @@ This also allows for an array of these objects. When providing a `desc`, you mus
 ## Contingencies
 Depending on the method you choose, there may be reasons why the SVG doesn't render.
 
-- When using the [Shadow DOM](https://bitsofco.de/what-is-the-shadow-dom/), referencing by `id` only exists within the root document that the element exists in; it cannot pentrate its search to a parent root document.
+- When using the [Shadow DOM](https://bitsofco.de/what-is-the-shadow-dom/), referencing by `id` only exists within the root document that the element exists in; it cannot penatrate its search to a parent root document.
 - When hosting your assets externally, often it becomes beneficial to host via a [CDN](https://www.cloudflare.com/learning/cdn/what-is-a-cdn/). SVG requests are subject to [CORS](https://www.codecademy.com/articles/what-is-cors). Specifically, attempting to request an SVG resource from a different domain will often be blocked.
 
 Both of these can be resolved using the `attemptInject` option, which will take the referenced asset shape and make a copy to be injected into the node. When preparing the assets, you will also receive a `inject` function which should be executed on the page where the SVGs will appear.
