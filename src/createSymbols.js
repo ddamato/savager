@@ -1,3 +1,9 @@
+/**
+ * Creates symbols from SVGs either by path or by provided object
+ * @param {String|Object} pathOrObject - A path to assets or an object of assetName:assetSvgMarkup
+ * @returns {Object} - An object of assetName:assetSymbolMarkup
+ */
+
 export default async function createSymbols(pathOrObject) {
 
   if (typeof pathOrObject === 'string') {
