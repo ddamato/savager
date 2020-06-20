@@ -25,16 +25,15 @@ function getAssets(assetConfigs, options) {
     classNames,
     toSvgElement,
   } = options || {};
-  const primarySvgAttrs = { xmlns: 'http://www.w3.org/2000/svg' };
+  const primarySvgAttrs = { 
+    xmlns: 'http://www.w3.org/2000/svg',
+    class: [].concat(classNames).filter(Boolean)
+  };
 
   const resources = {};
 
   if (attemptInject) {
     resources.inject = injectionInit;
-  }
-
-  if (classNames) {
-    primarySvgAttrs.class = [].concat(classNames).filter(Boolean).join(' ');
   }
 
   let renderFn = (svgString) => svgString;
@@ -47,7 +46,12 @@ function getAssets(assetConfigs, options) {
     const assetAttrs = assetConfig.attributes || {};
     const assetTitle = assetConfig.title || '';
     const assetDesc = assetConfig.desc || '';
-    const svgAttrs = Object.assign(assetAttrs, { exposure: 'internal' }, primarySvgAttrs);
+    const svgAttrs = Object.keys(assetAttrs).reduce((attrs, attr) => {
+      attrs[attr] = attr === 'class'
+        ? attrs[attr].concat(assetAttrs[attr]).filter(Boolean)
+        : assetAttrs[attr];
+      return attrs;
+    }, Object.assign({ exposure: 'internal' }, primarySvgAttrs));
     let useAttrs = { href: `#${assetName}` };
 
     if (typeof externalPath === 'string') {
@@ -88,7 +92,10 @@ function getAssets(assetConfigs, options) {
  * @returns {String} - An attribute string for an SVG element
  */
 function toAttributes(obj) {
-  return Object.entries(obj).map(([ name, value ]) => `${name}="${value}"`).join(' ');
+  return Object.entries(obj).map(([ name, value ]) => {
+    if (Array.isArray(value)) value = value.join(' ');
+    return `${name}="${value}"`;
+  }).join(' ');
 }
 
 export default getAssets;

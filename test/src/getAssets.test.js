@@ -27,4 +27,22 @@ describe('getAssets', function () {
     expect(assets.balloon).to.include('<title>My Balloon</title>');
     expect(assets.balloon).to.include('<desc>It is large, round, and light.</desc>');
   });
+
+  it('should merge classNames with class attribute', function () {
+    const balloonConfig = {
+      name: 'balloon',
+      attributes: {
+        class: 'my-balloon',
+        role: 'img',
+      }
+    };
+    const { assets } = getAssets(balloonConfig, { classNames: 'any-svg' });
+    expect(assets.balloon).to.include('class=');
+    expect(assets.balloon).to.include('role="img"');
+    const classNames = assets.balloon.match(/class="([^"]+)"/);
+    expect(classNames).to.exist;
+    const classes = classNames[1].split(' ');
+    expect(classes).to.include('any-svg');
+    expect(classes).to.include('my-balloon');
+  })
 });
