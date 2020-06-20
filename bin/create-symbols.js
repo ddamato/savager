@@ -44,7 +44,7 @@ async function writeSymbolReferenceFile(symbols, { outputDir, type }) {
       break;
     default:
       refString = json;
-  };
+  }
   const filename = path.join(outputDir, `manifest.${ext}`);
   await fs.ensureFile(filename);
   return fs.writeFile(filename, refString, 'utf-8');

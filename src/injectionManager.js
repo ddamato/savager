@@ -35,23 +35,23 @@ export default function injectionInit() {
         return Promise.resolve(this._replace(useNode, id));
       }
 
-      if (exposure === "internal") {
+      if (exposure === 'internal') {
         const root = useNode.getRootNode();
         const rootReference = root.getElementById(id);
         if (rootReference) {
           return Promise.resolve(
-            "Reference found in root, replacement halted."
+            'Reference found in root, replacement halted.'
           );
         }
         return this._embedInternal(useNode, { id });
       }
 
-      if (exposure === "external") {
+      if (exposure === 'external') {
         return this._embedExternal(useNode, { id, url });
       }
 
       return Promise.reject(
-        "Could not find asset reference. Ensure the reference sheet or external url exist before executing this script"
+        'Could not find asset reference. Ensure the reference sheet or external url exist before executing this script'
       );
     }
 
@@ -112,7 +112,7 @@ export default function injectionInit() {
           this.register(useNode, id, this._transformSymbol(symbol))
         );
       }
-      return Promise.reject(`Symbol "${id}" not found in document.`);
+      return Promise.reject(`Symbol '${id}' not found in document.`);
     }
 
     /**
@@ -128,8 +128,8 @@ export default function injectionInit() {
         .fetch(url)
         .then((res) => res.text())
         .then((text) => {
-          const dom = new DOMParser().parseFromString(text, "image/svg+xml");
-          const symbol = dom.querySelector("symbol");
+          const dom = new DOMParser().parseFromString(text, 'image/svg+xml');
+          const symbol = dom.querySelector('symbol');
           if (symbol) {
             return this.register(useNode, id, this._transformSymbol(symbol));
           }
@@ -146,14 +146,14 @@ export default function injectionInit() {
      * @returns {Object} - { url, exposure, id }
      */
     _parseNode(useNode) {
-      const url = useNode.getAttribute("href");
+      const url = useNode.getAttribute('href');
       if (!url) {
         return {};
       }
-      const [filepath, id] = url.split("#");
-      let exposure = useNode.getAttribute("exposure");
+      const [filepath, id] = url.split('#');
+      let exposure = useNode.getAttribute('exposure');
       if (!exposure) {
-        exposure = Boolean(filepath) ? "external" : "internal";
+        exposure = filepath ? 'external' : 'internal';
       }
       return { url, exposure, id };
     }
@@ -164,7 +164,7 @@ export default function injectionInit() {
      * @returns {SVGElement} - An <svg> element.
      */
     _transformSymbol(symbol) {
-      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
       symbol.children &&
         [...symbol.children].forEach((child) => svg.appendChild(child));
       symbol.hasAttributes() &&

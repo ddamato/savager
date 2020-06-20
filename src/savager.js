@@ -97,7 +97,7 @@ function completeAssetSheet(symbols, options) {
   const attrs = `id="${id}" xmlns="http://www.w3.org/2000/svg" style="display:none;"`;
   let script = '';
   if (prepareConsolidation) {
-    const iife = `(${consolidateSheet.toString()})('${id}', '${primarySheetId}')`.replace(/\"/g, `'`);
+    const iife = `(${consolidateSheet.toString()})('${id}', '${primarySheetId}')`.replace(/"/g, `'`);
     script = `<image href="#" onerror="${iife}"/>`;
   }
   return `<svg ${attrs}>${script}${symbols}</svg>`;
