@@ -73,3 +73,23 @@ function externalPathExample() {
 }
 
 externalPathExample();
+
+function a11yExample() {
+  /* More complex description of asset */
+  const a11yAssets = { 
+    name: 'dots-vertical',
+    title: 'Menu',
+    desc: 'Navigational menu',
+    attributes: {
+      role: 'img',
+      class: 'my-a11y-navigation'
+    }
+  };
+  const { assets } = savager.prepareAssets(a11yAssets, { classNames: 'my-svg', autoAppend: true });
+
+  /* Set the innerHTML of an existing element */
+  const mySvg = document.querySelector('.mySvg.a11yExample');
+  mySvg.innerHTML = assets['dots-vertical'];
+}
+
+a11yExample();

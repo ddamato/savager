@@ -94,4 +94,19 @@ mySvg<span class="token punctuation">.</span>innerHTML <span class="token operat
 <span class="token comment">/* Set the innerHTML of an existing element */</span>
 <span class="token keyword">const</span> mySvg <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">'.mySvg.externalPathExample'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 mySvg<span class="token punctuation">.</span>innerHTML <span class="token operator">=</span> assets<span class="token punctuation">[</span><span class="token string">'code-brackets'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-</code></pre><div class="mySvg externalPathExample"></div></main><script type="module" src="script.js"></script></body></html>
+</code></pre><div class="mySvg externalPathExample"></div><hr><h3 id="providing-accessibility">Providing accessibility</h3><p>If you need to add accessibility features to your SVG, you may pass in a configuration object instead of a string. The <code>attributes</code> key will apply any additional attributes (including <code>class</code>) to the SVG. Classes will be merged. You may also use the <code>className</code> key instead of <code>class</code> here.</p><pre class="language-js"><code class="language-js"><span class="token comment">/* More complex description of asset */</span>
+<span class="token keyword">const</span> a11yAssets <span class="token operator">=</span> <span class="token punctuation">{</span> 
+  name<span class="token operator">:</span> <span class="token string">'dots-vertical'</span><span class="token punctuation">,</span>
+  title<span class="token operator">:</span> <span class="token string">'Menu'</span><span class="token punctuation">,</span>
+  desc<span class="token operator">:</span> <span class="token string">'Navigational menu'</span><span class="token punctuation">,</span>
+  attributes<span class="token operator">:</span> <span class="token punctuation">{</span>
+    role<span class="token operator">:</span> <span class="token string">'img'</span><span class="token punctuation">,</span>
+    <span class="token keyword">class</span><span class="token operator">:</span> <span class="token string">'my-a11y-navigation'</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token punctuation">{</span> assets <span class="token punctuation">}</span> <span class="token operator">=</span> savager<span class="token punctuation">.</span><span class="token function">prepareAssets</span><span class="token punctuation">(</span>a11yAssets<span class="token punctuation">,</span> <span class="token punctuation">{</span> classNames<span class="token operator">:</span> <span class="token string">'my-svg'</span><span class="token punctuation">,</span> autoAppend<span class="token operator">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/* Set the innerHTML of an existing element */</span>
+<span class="token keyword">const</span> mySvg <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">'.mySvg.a11yExample'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+mySvg<span class="token punctuation">.</span>innerHTML <span class="token operator">=</span> assets<span class="token punctuation">[</span><span class="token string">'dots-vertical'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+</code></pre><div class="mySvg a11yExample"></div></main><script type="module" src="script.js"></script></body></html>

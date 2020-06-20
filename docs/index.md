@@ -234,3 +234,27 @@ mySvg.innerHTML = assets['code-brackets'];
 ```
 
 <div class="mySvg externalPathExample"></div>
+
+---
+
+### Providing accessibility
+If you need to add accessibility features to your SVG, you may pass in a configuration object instead of a string. The `attributes` key will apply any additional attributes (including `class`) to the SVG. Classes will be merged. You may also use the `className` key instead of `class` here.
+```js
+/* More complex description of asset */
+const a11yAssets = { 
+  name: 'dots-vertical',
+  title: 'Menu',
+  desc: 'Navigational menu',
+  attributes: {
+    role: 'img',
+    class: 'my-a11y-navigation'
+  }
+};
+const { assets } = savager.prepareAssets(a11yAssets, { classNames: 'my-svg', autoAppend: true });
+
+/* Set the innerHTML of an existing element */
+const mySvg = document.querySelector('.mySvg.a11yExample');
+mySvg.innerHTML = assets['dots-vertical'];
+```
+
+<div class="mySvg a11yExample"></div>

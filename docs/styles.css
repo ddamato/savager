@@ -87,7 +87,7 @@ pre {
   --background-highlight: 32%;
   --background-offset: .25em;
   border-radius: 2em;
-  background: hsl(var(--background-hs), 22%);
+  background: hsl(var(--background-hs), 20%);
   box-shadow: inset var(--background-offset) var(--background-offset) calc(var(--background-offset) * 2) hsl(var(--background-hs), var(--background-shadow)), 
               inset calc(var(--background-offset) * -1) calc(var(--background-offset) * -1) calc(var(--background-offset) * 2) hsl(var(--background-hs), var(--background-highlight));
 }

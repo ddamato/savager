@@ -47,7 +47,7 @@ function getAssets(assetConfigs, options) {
     const assetTitle = assetConfig.title || '';
     const assetDesc = assetConfig.desc || '';
     const svgAttrs = Object.keys(assetAttrs).reduce((attrs, attr) => {
-      attrs[attr] = attr === 'class'
+      attrs[attr] = ['class', 'className'].includes(attr)
         ? attrs[attr].concat(assetAttrs[attr]).filter(Boolean)
         : assetAttrs[attr];
       return attrs;
