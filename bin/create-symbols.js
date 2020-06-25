@@ -3,7 +3,8 @@ const path = require('path');
 const fs = require('fs-extra');
 const minimist = require('minimist');
 const esmImport = require('esm')(module);
-const createSymbols = esmImport('../src/createSymbols.js').default;
+const fnPath = path.resolve(__dirname, '..', 'src', 'createSymbols.js');
+const createSymbols = esmImport(fnPath).default;
 
 const args = minimist(process.argv.slice(2), {
   string: ['input', 'output', 'type'],
