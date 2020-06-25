@@ -64,7 +64,7 @@ export default function injectionInit() {
     _replace(useNode, id) {
       const clone = this.get(id).cloneNode(true);
       const svg = useNode.parentNode;
-      svg.setAttribute('replace', '');
+      svg.setAttribute('replaced', '');
       svg.removeAttribute('onerror');
       svg.removeAttribute('onanimationstart');
       clone.removeAttribute('id');
