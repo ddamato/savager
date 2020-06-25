@@ -67,6 +67,7 @@ export default function injectionInit() {
       svg.setAttribute('replace', '');
       svg.removeAttribute('onerror');
       svg.removeAttribute('onanimationstart');
+      clone.removeAttribute('id');
       this._assignClone(clone, svg);
       useNode.remove();
       return svg;
