@@ -20,11 +20,7 @@ createSymbols(args.input).then(async (symbols) => {
     throw new Error('Cannot overwrite input directory, please provide another directory for output.');
   }
 
-  try {
-    await fs.ensureDir(args.output);
-  } catch (err) {
-    throw new Error(`Output directory "${args.output}" does not exist.`);
-  }
+  await fs.ensureDir(args.output);
 
   await writeSymbolSvgFiles(symbols, { outputDir: args.output });
   await writeSymbolReferenceFile(symbols, { outputDir: args.output, type: args.type });

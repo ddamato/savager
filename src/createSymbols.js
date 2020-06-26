@@ -17,11 +17,15 @@ export default async function createSymbols(pathOrObject) {
     try {
       const files = await fs.promises.readdir(pathOrObject);
       const sources = await Promise.all(files.map(async (file) => {
+        const filepath = path.resolve(pathOrObject, file);
+        if (!fs.statSync(filepath).isFile()) {
+          return;
+        }
         const fileName = path.parse(file).name;
-        const source = await fs.promises.readFile(path.resolve(pathOrObject, file));
+        const source = await fs.promises.readFile(filepath);
         return { [fileName]: source.toString() };
-      }));
-      const flattened = sources.reduce(( acc, source ) => Object.assign(acc, source), {});
+      }))
+      const flattened = sources.filter(Boolean).reduce(( acc, source ) => Object.assign(acc, source), {});
       return createSymbols(flattened);
     } catch (err) {
       throw new Error(err);

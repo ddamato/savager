@@ -54,5 +54,21 @@ describe('create-symbols.js', async function () {
     const { x } = esmImport(esmPath);
     expect(exists).to.be.true;
     expect(x).to.be.a('string');
-  })
+  });
+
+  it('should throw if no symbols are found in directory', async function () {
+    try {
+      await execPromise(`${createSymbolsProcess} -i test/bin/fixtures/none -o test/bin/output`);
+    } catch (err) {
+      expect(err).to.exist;
+    }
+  });
+
+  it('should throw if attempting to overwrite in input directory', async function () {
+    try {
+      await execPromise(`${createSymbolsProcess} -i test/bin/fixtures -o test/bin/fixtures`);
+    } catch (err) {
+      expect(err).to.exist;
+    }
+  });
 });
