@@ -16,34 +16,40 @@ describe('createSymbols', function () {
     expect(symbols.x).to.be.a('string');
   });
 
-  it('should throw if it cannot read given directory', function (done) {
-    createSymbols(path.resolve(__dirname, 'undefined')).then(done).catch((err) => {
+  it('should throw if it cannot read given directory', async function () {
+    try {
+      await createSymbols(path.resolve(__dirname, 'undefined'));
+    } catch (err) {
       expect(err).to.exist;
-      done();
-    });
+    }
   });
 
-  it('should process a given object as svg strings', function (done) {
+  it('should throw if no symbols are in directory', async function () {
+    try {
+      await createSymbols(path.resolve(__dirname, 'fixtures', 'none'));
+    } catch (err) {
+      expect(err).to.exist;
+    }
+  });
+
+  it('should process a given object as svg strings', async function () {
     const x = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path/></svg>';
-    createSymbols({ x }).then((symbols) => {
-      expect(symbols.x).to.be.a('string');
-      done();
-    }).catch(done);
+    const symbols = await createSymbols({ x })
+    expect(symbols.x).to.be.a('string');
   });
 
-  it('should include complex collection of shapes', function (done) {
+  it('should include complex collection of shapes', async function () {
     const x = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path/><polygon/><circle/></svg>';
-    createSymbols({ x }).then((symbols) => {
-      expect(symbols.x).to.include('<path/><polygon/><circle/>');
-      done();
-    }).catch(done);
+    const symbols = await createSymbols({ x });
+    expect(symbols.x).to.include('<path/><polygon/><circle/>');
   });
 
-  it('should throw if incorrect parameter is provided', function (done) {
-    createSymbols(42).then(done).catch((err) => {
+  it('should throw if incorrect parameter is provided', async function () {
+    try {
+      await createSymbols(42);
+    } catch (err) {
       expect(err).to.exist;
-      done();
-    })
+    }
   });
 
   describe('browser context', function() {
@@ -60,11 +66,12 @@ describe('createSymbols', function () {
       jsdom();
     });
 
-    it('should throw if reading path in browser context', function(done) {
-      createSymbols(path.resolve(__dirname, 'fixtures')).then(done).catch((err) => {
+    it('should throw if reading path in browser context', async function() {
+      try {
+        await createSymbols(path.resolve(__dirname, 'fixtures'));
+      } catch (err) {
         expect(err).to.exist;
-        done();
-      }).catch(done);
+      }
     });
   });
 });

@@ -18,12 +18,12 @@ export default async function createSymbols(pathOrObject) {
       const files = await fs.promises.readdir(pathOrObject);
       const sources = await Promise.all(files.map(async (file) => {
         const filepath = path.resolve(pathOrObject, file);
-        if (!fs.statSync(filepath).isFile()) {
+        const { name, ext } = path.parse(file);
+        if (!ext || ext !== '.svg') {
           return;
         }
-        const fileName = path.parse(file).name;
         const source = await fs.promises.readFile(filepath);
-        return { [fileName]: source.toString() };
+        return { [name]: source.toString() };
       }))
       const flattened = sources.filter(Boolean).reduce(( acc, source ) => Object.assign(acc, source), {});
       return createSymbols(flattened);
