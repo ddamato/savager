@@ -23,11 +23,13 @@ describe('Savager', function () {
   });
 
   it('should return stored assets', function () {
-    const symbol = '<svg><symbol viewBox="0 0 24 24"><path/></symbol></svg>';
+    const symbol = '<svg><symbol viewBox="0 0 24 24"><path/><circle/></symbol></svg>';
     const savager = new Savager({ balloon: symbol });
-    const { assets } = savager.prepareAssets('balloon');
+    const { assets, sheet } = savager.prepareAssets('balloon');
     expect(assets.balloon).to.exist;
+    expect(sheet).to.exist;
     expect(assets.balloon).to.include('href="#balloon"');
+    expect(sheet).to.include('<path/><circle/>');
   });
 
   it('should provide an inject script when requested', function () {

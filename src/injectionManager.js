@@ -165,13 +165,16 @@ export default function injectionInit() {
      * @returns {SVGElement} - An <svg> element.
      */
     _transformSymbol(symbol) {
-      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-      symbol.children &&
-        [...symbol.children].forEach((child) => svg.appendChild(child));
-      symbol.hasAttributes() &&
-        [...symbol.attributes].forEach(({ name, value }) =>svg.setAttribute(name, value));
+      const ns = 'http://www.w3.org/2000/svg';
+      const svg = document.createElementNS(ns, 'svg');
+      toArray(symbol.children).forEach((child) => svg.appendChild(child));
+      toArray(symbol.attributes).forEach(({ name, value }) => svg.setAttributeNS(ns, name, value));
       return svg;
     }
+  }
+
+  function toArray(list) {
+    return list.length ? Array.from(list).filter(Boolean) : [];
   }
 
   if (typeof window !== 'undefined') {

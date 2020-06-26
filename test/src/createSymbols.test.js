@@ -31,6 +31,14 @@ describe('createSymbols', function () {
     }).catch(done);
   });
 
+  it('should include complex collection of shapes', function (done) {
+    const x = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path/><polygon/><circle/></svg>';
+    createSymbols({ x }).then((symbols) => {
+      expect(symbols.x).to.include('<path/><polygon/><circle/>');
+      done();
+    }).catch(done);
+  });
+
   it('should throw if incorrect parameter is provided', function (done) {
     createSymbols(42).then(done).catch((err) => {
       expect(err).to.exist;

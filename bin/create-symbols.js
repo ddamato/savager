@@ -11,7 +11,7 @@ const args = minimist(process.argv.slice(2), {
 });
 
 createSymbols(args.input).then(async (symbols) => {
-  console.log(`processing: ${args.input}`);
+  console.info(`processing: ${args.input}`);
   if (!symbols || !Object.keys(symbols).length) {
     throw new Error(`No svg files found in input directory "${args.input}"`);
   }
@@ -28,6 +28,7 @@ createSymbols(args.input).then(async (symbols) => {
 
   await writeSymbolSvgFiles(symbols, { outputDir: args.output });
   await writeSymbolReferenceFile(symbols, { outputDir: args.output, type: args.type });
+  console.info(`Files written to ${args.output}`);
 }).catch((err) => { throw new Error(err) });
 
 async function writeSymbolReferenceFile(symbols, { outputDir, type }) {

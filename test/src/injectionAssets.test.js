@@ -31,11 +31,12 @@ describe('injectionManager', function () {
     before(function() {
       jsdom = jsdomGlobal();
       global.DOMParser = window.DOMParser;
-      injectionInit();
     });
 
     beforeEach(function() {
       document.body.innerHTML = '';
+      window['svgInjectionManager'] = null;
+      injectionInit();
       window.fetch = null;
     });
 
@@ -61,8 +62,8 @@ describe('injectionManager', function () {
       }).catch(done);
     });
 
-    it('should use internal reference if available', function (done) {
-      document.body.innerHTML = '<svg><symbol id="balloon"><path></path></symbol></svg>';
+    it('should not error if there are no child nodes', function (done) {
+      document.body.innerHTML = '<svg><symbol id="balloon"></symbol></svg>';
       const div = document.createElement('div');
       div.attachShadow({ mode: 'open' });
       div.shadowRoot.innerHTML = '<svg><use href="#balloon"></use></svg>';
@@ -71,6 +72,49 @@ describe('injectionManager', function () {
       
       window['svgInjectionManager'].replace(useNode).then(() => {
         expect(window['svgInjectionManager'].get('balloon')).to.exist;
+        done();
+      }).catch(done);
+    });
+
+    it('should include attributes from reference sheet in host', function (done) {
+      const attrs = 'viewBox="0 0 24 24" role="img"';
+      document.body.innerHTML = `<svg><symbol id="balloon" ${attrs}><path></path></symbol></svg>`;
+      const div = document.createElement('div');
+      div.attachShadow({ mode: 'open' });
+      div.shadowRoot.innerHTML = '<svg><use href="#balloon"></use></svg>';
+      const useNode = div.shadowRoot.querySelector('use');
+      document.body.appendChild(div);
+      
+      window['svgInjectionManager'].replace(useNode).then(() => {
+        expect(document.body.innerHTML).to.include(attrs);
+        expect(document.querySelector('symbol').outerHTML).to.include(attrs);
+        expect(window['svgInjectionManager'].get('balloon').outerHTML).to.include(attrs);
+        expect(div.shadowRoot.innerHTML).to.include(attrs);
+        done();
+      }).catch(done);
+    });
+
+    it('should use internal reference if available', function (done) {
+      document.body.innerHTML = '<svg><symbol id="balloon"><path></path></symbol></svg>';
+
+      const createElem = () => {
+        const assetHTML = '<svg><use href="#balloon"></use></svg>';
+        const div = document.createElement('div');
+        div.attachShadow({ mode: 'open' });
+        div.shadowRoot.innerHTML = assetHTML;
+        const useNode = div.shadowRoot.querySelector('use');
+        document.body.appendChild(div);
+        return useNode;
+      }
+
+      const use1 = createElem();
+      const use2 = createElem();
+
+      Promise.all([
+        window['svgInjectionManager'].replace(use1),
+        window['svgInjectionManager'].replace(use2)
+      ]).then(() => {
+        expect(window['svgInjectionManager'].get('balloon')).to.exist
         done();
       }).catch(done);
     });
